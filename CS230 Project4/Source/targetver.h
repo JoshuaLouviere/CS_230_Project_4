@@ -3,12 +3,12 @@
 // File Name:	stdafx.c
 // Author(s):	Matthew Picioccio (mattpic), Doug Schilling (dschilling)
 // Project:		Project 0
-// Course:		CS230S23
+// Course:		CS230S24
 // Description:	Including SDKDDKVer.h defines the highest available Windows platform.
 //   If you wish to build your application for a previous Windows platform, include WinSDKVer.hand
 //   set the _WIN32_WINNT macro to the platform you wish to support before including SDKDDKVer.h.
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright © 2024 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 

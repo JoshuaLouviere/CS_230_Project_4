@@ -1,11 +1,11 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	Scene.c
-// Author(s):	Doug Schilling (dschilling)
-// Project:		Project 0
+// Author(s):	Doug Schilling (dschilling) Joshua Louviere (joshua.louviere)
+// Project:		Project 4
 // Course:		CS230S23
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright © 2024 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 
@@ -14,6 +14,8 @@
 #include "Trace.h"
 #include "Scene.h"
 #include "SceneSystem.h"
+#include "EntityContainer.h"
+#include "EntityFactory.h"
 
 //------------------------------------------------------------------------------
 // Private Constants:
@@ -34,6 +36,8 @@
 //------------------------------------------------------------------------------
 // Private Variables:
 //------------------------------------------------------------------------------
+
+static EntityContainer* entities = NULL;
 
 //------------------------------------------------------------------------------
 // Private Function Declarations:
@@ -62,6 +66,8 @@ bool SceneIsValid(const Scene* scene)
 // Load the scene.
 void SceneLoad(const Scene* scene)
 {
+	entities = EntityContainerCreate();
+
 	// Verify that the function pointer is valid.
 	if (scene && (scene->load != NULL))
 	{
@@ -90,6 +96,8 @@ void SceneInit(const Scene* scene)
 // Update the scene.
 void SceneUpdate(const Scene* scene, float dt)
 {
+	EntityContainerUpdateAll(&entities, dt);
+
 	// Verify that the function pointer is valid.
 	if (scene && (scene->update != NULL))
 	{
@@ -104,6 +112,8 @@ void SceneUpdate(const Scene* scene, float dt)
 // Render the scene.
 void SceneRender(const Scene* scene)
 {
+	EntityContainerRenderAll(&entities);
+
 	// Verify that the function pointer is valid.
 	if (scene && (scene->render != NULL))
 	{
@@ -117,7 +127,9 @@ void SceneRender(const Scene* scene)
 
 // Exit the scene.
 void SceneExit(const Scene* scene)
-{
+{	
+	EntityContainerFreeAll(&entities);
+	EntityFactoryFreeAll();
 	// Verify that the function pointer is valid.
 	if (scene && (scene->exit != NULL))
 	{
@@ -141,6 +153,8 @@ void SceneUnload(const Scene* scene)
 		// Execute the Load function.
 		(*scene->unload)();
 	}
+
+	EntityContainerFree(&entities);
 }
 
 // Restart the active scene.
@@ -148,6 +162,15 @@ void SceneRestart(void)
 {
 	// Tell the Scene System to restart the active scene.
 	SceneSystemRestart();
+}
+
+// Add an Entity to the Scene.
+// (NOTE: This is done by storing the Entity within an EntityContainer.)
+// Params:
+//   entity = Pointer to the Entity to be added.
+void SceneAddEntity(Entity* entity) 
+{
+	EntityContainerAddEntity(&entities, entity);
 }
 
 //------------------------------------------------------------------------------

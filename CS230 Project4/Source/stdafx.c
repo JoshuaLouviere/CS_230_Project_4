@@ -3,13 +3,13 @@
 // File Name:	stdafx.c
 // Author(s):	Doug Schilling (dschilling)
 // Project:		Project 0
-// Course:		CS230S23
+// Course:		CS230S24
 // Purpose:		This file is used to generate the precompiled header file (stdafx.h).
 //   When using precompiled headers, exactly one .c/.cpp file must be used to
 //   generate the PCH with the "Create (/Yc)" project setting.  All other .c/.cpp
 //   files must be set to use the PCH with the "Use (/Yu)" project setting.
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright © 2024 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 

@@ -24,6 +24,7 @@
 #include "Physics.h"
 #include "Sprite.h"
 #include "Animation.h"
+#include "Behavior.h"
 
 //------------------------------------------------------------------------------
 // Forward References:
@@ -66,6 +67,11 @@ typedef struct Entity
 	//Pointer to an attached animation componenet.
 	Animation* animation;
 
+	// Clarify state of destruction
+	bool isDestroyed
+
+	// Behaviors
+	Behavior* behavior;
 } Entity;
 
 //------------------------------------------------------------------------------
@@ -103,7 +109,7 @@ void EntityFree(Entity** entity)
 {
 	if (*entity)
 	{
-		//free all parts first then the container
+		// free all parts first then the container
 		PhysicsFree(&((*entity)->physics));
 		(*entity)->physics = NULL;
 		TransformFree(&((*entity)->transform));
@@ -144,7 +150,7 @@ void EntityRead(Entity* entity, Stream stream)
 		while (true)
 		{
 			token = StreamReadToken(stream);
-			//printf("%s\n", token);
+			// printf("%s\n", token);
 			if (strncmp(token, "Transform", _countof("Transform")) == 0)
 			{
 				Transform* transform = TransformCreate();
