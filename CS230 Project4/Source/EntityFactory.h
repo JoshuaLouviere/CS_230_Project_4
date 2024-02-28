@@ -2,10 +2,10 @@
 //
 // File Name:	EntityFactory.h
 // Author(s):	Doug Schilling (dschilling)
-// Project:		Project 4
-// Course:		CS230S24
+// Project:		Project 2
+// Course:		CS230S23
 //
-// Copyright © 2024 DigiPen (USA) Corporation.
+// Copyright © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 
@@ -45,21 +45,13 @@ typedef struct Entity Entity;
 //------------------------------------------------------------------------------
 
 // Build a single instance of the specified Entity.
-// (NOTE: Use sprintf_s() to construct a path name using objectName.)
-// (HINT: The correct path name should be constructed using "Data/&s.txt".)
-// (HINT: See project instructions.)
 // Params:
-//	 entityName = The name of the Entity to be constructed.
+//	 filename = The name of the file to be deserialized.
 // Returns:
-//	 If the objectName is not NULL,
+//	 If the filename is valid
 //	   then return a pointer to a new instance of the specified Entity,
 //	   else NULL.
-Entity* EntityFactoryBuild(const char * entityName);
-
-// Free all archetype Entities.
-// (Hint: If the "archetypes" container exists, then the EntityContainerFreeAll
-//    function must be called.)
-void EntityFactoryFreeAll();
+Entity* EntityFactoryBuild(const char * filename);
 
 //------------------------------------------------------------------------------
 

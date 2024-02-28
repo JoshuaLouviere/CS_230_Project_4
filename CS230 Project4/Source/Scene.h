@@ -2,10 +2,10 @@
 //
 // File Name:	Scene.h
 // Author(s):	Doug Schilling (dschilling)
-// Project:		Project 4
-// Course:		CS230S24
+// Project:		Project 0
+// Course:		CS230S23
 //
-// Copyright © 2024 DigiPen (USA) Corporation.
+// Copyright © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 
@@ -24,8 +24,6 @@ extern "C" {	// Assume C declarations for C++.
 //------------------------------------------------------------------------------
 // Forward References:
 //------------------------------------------------------------------------------
-
-typedef struct Entity Entity;
 
 //------------------------------------------------------------------------------
 // Public Constants:
@@ -77,12 +75,6 @@ void SceneUnload(const Scene* scene);
 
 // Restart the active scene.
 void SceneRestart(void);
-
-// Add an Entity to the Scene.
-// (NOTE: This is done by storing the Entity within an EntityContainer.)
-// Params:
-//   entity = Pointer to the Entity to be added.
-void SceneAddEntity(Entity* entity);
 
 //------------------------------------------------------------------------------
 

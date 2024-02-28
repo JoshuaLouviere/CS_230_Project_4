@@ -3,10 +3,10 @@
 // File Name:	BaseSystem.h
 // Author(s):	Doug Schilling (dschilling)
 // Project:		Project 0
-// Course:		CS230S24
+// Course:		CS230S23
 // Purpose:		This serves as a base "class" for all systems.
 //
-// Copyright © 2024 DigiPen (USA) Corporation.
+// Copyright © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 

@@ -3,11 +3,11 @@
 // File Name:	stdafx.c
 // Author(s):	Matthew Picioccio (mattpic), Doug Schilling (dschilling)
 // Project:		Project 0
-// Course:		CS230S24
+// Course:		CS230S23
 // Purpose:		This file includes standard system include files, or project-specific 
 //   include files that are used frequently, but are changed infrequently.
 //
-// Copyright © 2024 DigiPen (USA) Corporation.
+// Copyright © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 

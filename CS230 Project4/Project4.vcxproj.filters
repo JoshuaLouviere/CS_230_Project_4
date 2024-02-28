@@ -125,8 +125,17 @@
     <ClCompile Include="Source\Animation.c">
       <Filter>Engine\Entities\Components\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\BehaviorBullet.c">
-      <Filter>Game\Behaviors</Filter>
+    <ClCompile Include="Source\AsteroidsScene.c">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MeshLibrary.c">
+      <Filter>Engine\Entities\Components\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityContainer.c">
+      <Filter>Engine\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CheatSystem.c">
+      <Filter>Game\Systems</Filter>
     </ClCompile>
     <ClCompile Include="Source\BehaviorSpaceship.c">
       <Filter>Game\Behaviors</Filter>
@@ -134,17 +143,8 @@
     <ClCompile Include="Source\Behavior.c">
       <Filter>Engine\Entities\Components\Behavior</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EntityContainer.c">
-      <Filter>Engine\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\AsteroidsScene.c">
-      <Filter>Game\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MeshLibrary.c">
-      <Filter>Engine\Entities\Components\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\CheatSystem.c">
-      <Filter>Game\Systems</Filter>
+    <ClCompile Include="Source\BehaviorBullet.c">
+      <Filter>Game\Behaviors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,14 +238,14 @@
     <ClInclude Include="Source\EntityContainer.h">
       <Filter>Engine\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Source\AsteroidsScene.h">
-      <Filter>Game\Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\MeshLibrary.h">
       <Filter>Engine\Entities\Components\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\CheatSystem.h">
       <Filter>Game\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AsteroidsScene.h">
+      <Filter>Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

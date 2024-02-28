@@ -2,10 +2,10 @@
 //
 // File Name:	Stream.h
 // Author(s):	Doug Schilling (dschilling)
-// Project:		Project 4
-// Course:		CS230S24
+// Project:		Project 2
+// Course:		CS230S23
 //
-// Copyright © 2024 DigiPen (USA) Corporation.
+// Copyright © 2023 DigiPen (USA) Corporation.
 //
 // Helpful Links:
 //   https://learn.microsoft.com/en-us/dotnet/standard/io/file-path-formats
@@ -30,8 +30,7 @@ extern "C" {
 //------------------------------------------------------------------------------
 
 typedef FILE* Stream;
-typedef struct DGL_Vec2 Vector2D;
-typedef struct DGL_Color DGL_Color;
+typedef struct DGL_Vec2 DGL_Vec2;
 
 //------------------------------------------------------------------------------
 // Public Constants:
@@ -102,19 +101,7 @@ float StreamReadFloat(Stream stream);
 //	 If the stream and vector pointer are both valid,
 //	   then fill the vector with two float values (x & y),
 //	   else do nothing (optionally, write an error message to the trace log).
-void StreamReadVector2D(Stream stream, Vector2D* vector);
-
-// Read the data for a Color from a stream.
-// (NOTE: Verify that the stream and color pointers are valid first.)
-// (HINT: Use StreamReadFloat() to read the RGBA values, in sequence.)
-// Params:
-//	 stream = The file stream from which to read.
-// Returns:
-//	 If the stream and color pointers are both valid,
-//	   then read the RGBA components, in sequence,
-//	   else fill the RGBA components with 0.
-//		 (optionally, write an error message to the trace log).
-void StreamReadColor(Stream stream, DGL_Color* color);
+void StreamReadVector2D(Stream stream, DGL_Vec2* vector);
 
 // Read a token (a single word) from a file.
 // Suggested steps:

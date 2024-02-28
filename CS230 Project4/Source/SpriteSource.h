@@ -3,9 +3,9 @@
 // File Name:	SpriteSource.h
 // Author(s):	Doug Schilling (dschilling)
 // Project:		Project 2
-// Course:		CS230S24
+// Course:		CS230S23
 //
-// Copyright © 2024 DigiPen (USA) Corporation.
+// Copyright © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 
@@ -78,9 +78,6 @@ SpriteSource* SpriteSourceCreate();
 void SpriteSourceFree(SpriteSource** spriteSource);
 
 // Load a texture from a file (may be an Col x Row sprite sheet).
-// (NOTE: The folder path, "Assets/" should be prepended to the texture name before
-//    opening the file.  The function sprintf_s can be used for this purpose.
-//    https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/sprintf-s-sprintf-s-l-swprintf-s-swprintf-s-l)
 // Params:
 //	 numCols = The number of columns in the sprite sheet.
 //	 numRows = The number of rows in the sprite sheet.

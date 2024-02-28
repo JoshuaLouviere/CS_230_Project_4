@@ -2,10 +2,10 @@
 //
 // File Name:	Animation.h
 // Author(s):	Doug Schilling (dschilling)
-// Project:		Project 4
-// Course:		CS230S24
+// Project:		Project 3
+// Course:		CS230S23
 //
-// Copyright © 2024 DigiPen (USA) Corporation.
+// Copyright © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 
@@ -84,16 +84,6 @@ typedef struct Animation
 // Dynamically allocate a new Animation component.
 // (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
 Animation* AnimationCreate(void);
-
-// Dynamically allocate a clone of an existing Animation component.
-// (Hint: Perform a shallow copy of the member variables.)
-// Params:
-//	 other = Pointer to the component to be cloned.
-// Returns:
-//	 If 'other' is valid and the memory allocation was successful,
-//	   then return a pointer to the cloned component,
-//	   else return NULL.
-Animation* AnimationClone(const Animation* other);
 
 // Free the memory associated with an Animation component.
 // (NOTE: The Animation pointer must be set to NULL.)
