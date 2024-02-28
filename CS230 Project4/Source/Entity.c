@@ -3,13 +3,11 @@
 // File Name:	Entity.h
 // Author(s):	Doug Schilling (dschilling)
 // Project:		Project 2
-// Course:		CS230S23
+// Course:		CS230S24
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright © 2024 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
-
-#pragma once
 
 //------------------------------------------------------------------------------
 // Include Files:

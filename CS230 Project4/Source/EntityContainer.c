@@ -3,7 +3,7 @@
 // File Name:	EntityContainer.h
 // Author(s):	Doug Schilling (dschilling) Joshua Louviere (joshua.louviere)
 // Project:		Project 4
-// Course:		CS230S23
+// Course:		CS230S24
 //
 // Copyright © 2024 DigiPen (USA) Corporation.
 //------------------------------------------------------------------------------
@@ -16,8 +16,6 @@
 // Copyright © 2024 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
-
-#pragma once
 
 //------------------------------------------------------------------------------
 // Include Files:
@@ -146,7 +144,7 @@ Entity* EntityContainerFindByName(const EntityContainer* entities, const char* e
 		int i = 0;
 		for (i = 0; i < _countof(entities->entities); i++) {
 			const char* thisName = EntityGetName(entities->entities[i]);
-			if (strncmp(thisName, entityName, _countof(entityName)) == 0) {
+			if (strcmp(thisName, entityName) == 0) {
 				return entities->entities[i];
 			}
 		}
