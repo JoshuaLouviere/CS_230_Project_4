@@ -96,7 +96,7 @@ void SceneInit(const Scene* scene)
 // Update the scene.
 void SceneUpdate(const Scene* scene, float dt)
 {
-	EntityContainerUpdateAll(&entities, dt);
+	EntityContainerUpdateAll(entities, dt);
 
 	// Verify that the function pointer is valid.
 	if (scene && (scene->update != NULL))
@@ -112,7 +112,7 @@ void SceneUpdate(const Scene* scene, float dt)
 // Render the scene.
 void SceneRender(const Scene* scene)
 {
-	EntityContainerRenderAll(&entities);
+	EntityContainerRenderAll(entities);
 
 	// Verify that the function pointer is valid.
 	if (scene && (scene->render != NULL))
@@ -128,7 +128,7 @@ void SceneRender(const Scene* scene)
 // Exit the scene.
 void SceneExit(const Scene* scene)
 {	
-	EntityContainerFreeAll(&entities);
+	EntityContainerFreeAll(entities);
 	EntityFactoryFreeAll();
 	// Verify that the function pointer is valid.
 	if (scene && (scene->exit != NULL))
@@ -170,7 +170,7 @@ void SceneRestart(void)
 //   entity = Pointer to the Entity to be added.
 void SceneAddEntity(Entity* entity) 
 {
-	EntityContainerAddEntity(&entities, entity);
+	EntityContainerAddEntity(entities, entity);
 }
 
 //------------------------------------------------------------------------------

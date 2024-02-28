@@ -68,7 +68,7 @@ typedef struct Entity
 	Animation* animation;
 
 	// Clarify state of destruction
-	bool isDestroyed
+	bool isDestroyed;
 
 	// Behaviors
 	Behavior* behavior;

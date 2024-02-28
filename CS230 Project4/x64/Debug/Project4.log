@@ -1,3 +1,12 @@
-﻿  AsteroidsScene.c
-  Project4.vcxproj -> C:\Users\joshu\Documents\GitHub\CS_230_Project_4\CS230 Project4\x64\Debug\Project4.exe
-  1 File(s) copied
+﻿  EntityContainer.c
+  Level1Scene.c
+C:\Users\joshu\Documents\GitHub\CS_230_Project_4\CS230 Project4\Source\Level1Scene.c(173,24): error C2220: the following warning is treated as an error
+C:\Users\joshu\Documents\GitHub\CS_230_Project_4\CS230 Project4\Source\Level1Scene.c(173,24): warning C4013: 'MeshCreateQuad' undefined; assuming extern returning int
+C:\Users\joshu\Documents\GitHub\CS_230_Project_4\CS230 Project4\Source\Level1Scene.c(173,79): warning C4047: '=': 'Mesh *' differs in levels of indirection from 'int'
+C:\Users\joshu\Documents\GitHub\CS_230_Project_4\CS230 Project4\Source\Level1Scene.c(174,84): warning C4047: '=': 'Mesh *' differs in levels of indirection from 'int'
+C:\Users\joshu\Documents\GitHub\CS_230_Project_4\CS230 Project4\Source\Level1Scene.c(175,67): warning C4047: '=': 'Mesh *' differs in levels of indirection from 'int'
+  Level2Scene.c
+C:\Users\joshu\Documents\GitHub\CS_230_Project_4\CS230 Project4\Source\Level2Scene.c(104,18): error C2220: the following warning is treated as an error
+C:\Users\joshu\Documents\GitHub\CS_230_Project_4\CS230 Project4\Source\Level2Scene.c(104,18): warning C4013: 'MeshCreateSpaceship' undefined; assuming extern returning int
+C:\Users\joshu\Documents\GitHub\CS_230_Project_4\CS230 Project4\Source\Level2Scene.c(104,39): warning C4047: '=': 'Mesh *' differs in levels of indirection from 'int'
+  Generating Code...
