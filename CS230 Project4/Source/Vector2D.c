@@ -90,9 +90,13 @@ float Vector2DSquareLength(const DGL_Vec2* pVec0)
 // This function returns the distance between two points.
 float Vector2DDistance(const DGL_Vec2* pVec0, const DGL_Vec2* pVec1)
 {
-	float xProduct = (pVec1->x - pVec0->x) * (pVec1->x - pVec0->x);
-	float yProduct = (pVec1->y - pVec0->y) * (pVec1->y - pVec0->y);
-	return sqrtf(xProduct + yProduct);
+	if (pVec0 && pVec1) {
+		float xProduct = (pVec1->x - pVec0->x) * (pVec1->x - pVec0->x);
+		float yProduct = (pVec1->y - pVec0->y) * (pVec1->y - pVec0->y);
+		return sqrtf(xProduct + yProduct);
+	}
+
+	return 0.0f;
 }
 
 // This function returns the distance squared between two points.

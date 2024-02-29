@@ -56,7 +56,7 @@ typedef struct EntityContainer
 	// This variable is not required but could be used for tracking the number
 	//   of Entities currently in the list.  Instructions on how to do this
 	//   are included in the function headers.
-	unsigned entityCount;
+	int entityCount;
 
 	// This variable is not required but could be used for different purposes.
 	// - For storing the maximum size of the container.
@@ -89,7 +89,7 @@ typedef struct EntityContainer
 //	   else return NULL.
 EntityContainer* EntityContainerCreate() {
 	EntityContainer* entityC = calloc(1, sizeof(EntityContainer));
-
+	entityC->entityCount = 0;
 	if (entityC)
 	{
 		return entityC;
@@ -104,7 +104,7 @@ EntityContainer* EntityContainerCreate() {
 // Params:
 //	 entities = Pointer to the EntityContainer pointer.
 void EntityContainerFree(EntityContainer** entities) {
-	EntityContainerFreeAll(*entities);
+	//EntityContainerFreeAll(*entities);
 	free(*entities);
 	*entities = NULL;
 }
@@ -120,9 +120,9 @@ void EntityContainerFree(EntityContainer** entities) {
 //		else return false.
 bool EntityContainerAddEntity(EntityContainer* entities, Entity* entity) 
 {
-	entities->entities[_countof(entities->entities) - 1] = entity;
-
-	if (entities->entities[_countof(entities->entities) - 1]) {
+	entities->entities[entities->entityCount] = entity;
+	entities->entityCount++;
+	if (entities->entities[entities->entityCount]) {
 		return true;
 	}
 
@@ -142,7 +142,8 @@ Entity* EntityContainerFindByName(const EntityContainer* entities, const char* e
 {
 	if (entities) {
 		int i = 0;
-		for (i = 0; i < _countof(entities->entities); i++) {
+		int count = entities->entityCount;
+		for (i = 0; i < count; i++) {
 			const char* thisName = EntityGetName(entities->entities[i]);
 			if (strcmp(thisName, entityName) == 0) {
 				return entities->entities[i];
@@ -210,9 +211,13 @@ void EntityContainerRenderAll(const EntityContainer* entities)
 void EntityContainerFreeAll(EntityContainer* entities) 
 {
 	int i = 0;
-	for (i = 0; i < _countof(entities->entities); ++i) {
-		EntityFree(&(entities)->entities[i]);
+	if (entities) {
+		int count = entities->entityCount;
+		for (i = 0; i < count; ++i) {
+			EntityFree(&(entities)->entities[i]);
+		}
 	}
+	
 }
 
 //------------------------------------------------------------------------------

@@ -22,6 +22,7 @@
 #include "EntityFactory.h"
 #include "Stream.h"
 #include "Entity.h"
+#include "EntityContainer.h"
 //------------------------------------------------------------------------------
 // Forward References:
 //------------------------------------------------------------------------------
@@ -38,6 +39,8 @@
 // Public Variables:
 //------------------------------------------------------------------------------
 
+static EntityContainer* archetypes = NULL;
+
 //------------------------------------------------------------------------------
 // Public Functions:
 //------------------------------------------------------------------------------
@@ -49,26 +52,50 @@
 //	 If the filename is valid
 //	   then return a pointer to a new instance of the specified game object,
 //	   else NULL.
-Entity* EntityFactoryBuild(const char* filename)
+Entity* EntityFactoryBuild(const char* entityName)
 {
-	FILE* file = StreamOpen(filename);
+	if (entityName == NULL) {
+		return NULL;
+	} 
 
-	if (file)
-	{
-		const char* token = StreamReadToken(file);
+	char pathName[50] = "";
+	sprintf_s(pathName, _countof(pathName), "./Data/%s.txt", entityName);
+	// printf("%s\n", pathName);
+	FILE* file = StreamOpen(pathName);
 
-		if (strncmp(token, "Entity", _countof("Entity")) == 0)
-		{
-			Entity* ent = EntityCreate();
-			EntityRead(ent, file);
-			StreamClose(&file);
-			return ent;
-		}
-
-		StreamClose(&file);
+	if (archetypes == NULL) {
+		archetypes = EntityContainerCreate();
 	}
+
+	if (EntityContainerFindByName(archetypes, entityName) == NULL) {
+		printf("Success\n");
+		if (file)
+		{
+			const char* token = StreamReadToken(file);
+
+			if (strncmp(token, "Entity", _countof("Entity")) == 0)
+			{
+				Entity* ent = EntityCreate();
+				EntityRead(ent, file);
+				EntityContainerAddEntity(archetypes, ent);
+
+				StreamClose(&file);
+				return ent;
+			}
+
+			StreamClose(&file);
+		}
+	}
+	
 
 	return NULL;
 }
 
+// Free all archetype Entities.
+// (Hint: If the "archetypes" container exists, then the EntityContainerFreeAll
+//    function must be called.)
+void EntityFactoryFreeAll() 
+{
+	//if ()
+}
 //------------------------------------------------------------------------------

@@ -183,9 +183,9 @@ static void Level1SceneInit()
 	SpriteSourceLoadTexture(instance.monkeyWalkSpriteSource, 3, 3, "./Assets/MonkeyWalk.png");
 	SpriteSourceLoadTexture(instance.monkeyJumpSpriteSource, 1, 1, "./Assets/MonkeyJump.png");
 	SpriteSourceLoadTexture(instance.livesTextSpriteSource, 16, 8, "./Assets/Roboto_Mono_black.png");
-	instance.entity = EntityFactoryBuild("./Data/PlanetBounce.txt");
-	instance.monkey = EntityFactoryBuild("./Data/Monkey.txt");
-	instance.livesText = EntityFactoryBuild("./Data/MonkeyLivesText.txt");
+	instance.entity = EntityFactoryBuild("PlanetBounce");
+	instance.monkey = EntityFactoryBuild("Monkey");
+	instance.livesText = EntityFactoryBuild("MonkeyLivesText");
 
 	if (instance.monkey)
 	{
