@@ -96,6 +96,8 @@ Entity* EntityFactoryBuild(const char* entityName)
 //    function must be called.)
 void EntityFactoryFreeAll() 
 {
-	//if ()
+	if (archetypes) {
+		EntityContainerFreeAll(archetypes);
+	}
 }
 //------------------------------------------------------------------------------

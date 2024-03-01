@@ -183,6 +183,31 @@ void EntityRead(Entity* entity, Stream stream)
 	}
 }
 
+// Dynamically allocate a clone of an existing Entity.
+// (Hint: Make sure to perform a shallow copy or deep copy, as appropriate.)
+// (WARNING: You should use the EntityAdd* functions when attaching cloned
+//    components to the cloned Entity.  This will ensure that the 'parent'
+//    variable is set properly.)
+// Params:
+//	 other = Pointer to the Entity to be cloned.
+// Returns:
+//	 If 'other' is valid and the memory allocation was successful,
+//	   then return a pointer to the cloned Entity,
+//	   else return NULL.
+Entity* EntityClone(const Entity* other)
+{
+	if (other) {
+		//Entity* shallow = &other;
+		Entity* deep = EntityCreate();
+		EntitySetName(deep, other->name);
+		if (deep) {
+			return deep;
+		}
+	}
+
+	return NULL;
+}
+
 // Attach a Physics component to an Entity.
 // Params:
 //	 entity = Pointer to the Entity.

@@ -89,9 +89,10 @@ typedef struct EntityContainer
 //	   else return NULL.
 EntityContainer* EntityContainerCreate() {
 	EntityContainer* entityC = calloc(1, sizeof(EntityContainer));
-	entityC->entityCount = 0;
+
 	if (entityC)
 	{
+		entityC->entityCount = 0;
 		return entityC;
 	}
 
@@ -122,7 +123,7 @@ bool EntityContainerAddEntity(EntityContainer* entities, Entity* entity)
 {
 	entities->entities[entities->entityCount] = entity;
 	entities->entityCount++;
-	if (entities->entities[entities->entityCount]) {
+	if (entities->entities[entities->entityCount - 1]) {
 		return true;
 	}
 
@@ -182,7 +183,8 @@ void EntityContainerUpdateAll(EntityContainer* entities, float dt)
 {
 	if (entities) {
 		int i = 0;
-		for (i = 0; i < _countof(entities->entities); i++) {
+		int count = entities->entityCount;
+		for (i = 0; i < count; i++) {
 			EntityUpdate(entities->entities[i], dt);
 		}
 	}
@@ -196,7 +198,8 @@ void EntityContainerRenderAll(const EntityContainer* entities)
 {
 	if (entities) {
 		int i = 0;
-		for (i = 0; i < _countof(entities->entities); i++) {
+		int count = entities->entityCount;
+		for (i = 0; i < count; i++) {
 			EntityRender(entities->entities[i]);
 		}
 	}

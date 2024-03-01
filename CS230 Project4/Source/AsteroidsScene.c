@@ -103,6 +103,9 @@ static void AsteroidsSceneLoad(void)
 // Initialize the variables used by the scene.
 static void AsteroidsSceneInit()
 {
+	Entity* ent = EntityFactoryBuild("Spaceship");
+	SceneAddEntity(ent);
+
 	// Background / Blend mode
 	float col = 0.0f;
 	DGL_Graphics_SetBackgroundColor(&(DGL_Color) { col, col, col, 1.0f });
