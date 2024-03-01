@@ -23,6 +23,7 @@
 #include "Sprite.h"
 #include "Animation.h"
 #include "Behavior.h"
+#include "BehaviorSpaceship.h"
 
 //------------------------------------------------------------------------------
 // Forward References:
@@ -173,7 +174,13 @@ void EntityRead(Entity* entity, Stream stream)
 				AnimationRead(animation, stream);
 				AnimationSetParent(animation, entity);
 				entity->animation = animation;
-			} 
+			}
+			else if (strncmp(token, "BehaviorSpaceship", _countof("BehaviorSpaceship")) == 0) 
+			{
+				Behavior* beh = BehaviorSpaceshipCreate();
+				BehaviorRead(beh, stream);
+				EntityAddBehavior(entity, beh);
+			}
 			else if (strncmp(token, "", _countof("")) == 0)
 			{
 				return;
@@ -181,6 +188,84 @@ void EntityRead(Entity* entity, Stream stream)
 		}
 
 	}
+}
+
+// Flag an Entity for destruction.
+// (Note: This is to avoid Entities being destroyed while they are being processed.)
+// Params:
+//	 entity = Pointer to the Entity to be flagged for destruction.
+// Returns:
+//	 If 'entity' is valid,
+//	   then set the 'isDestroyed' flag,
+//	   else do nothing.
+void EntityDestroy(Entity* entity)
+{
+	if (entity) {
+		entity->isDestroyed = true;
+	}
+}
+
+// Check whether an Entity has been flagged for destruction.
+// Params:
+//	 entity = Pointer to the Entity.
+// Returns:
+//	 If the Entity pointer is valid,
+//		then return the value in the "isDestroyed" flag,
+//		else return false.
+bool EntityIsDestroyed(const Entity* entity)
+{
+	if (entity) {
+		return entity->isDestroyed;
+	}
+
+	return false;
+}
+
+// Compare the Entity's name with the specified name.
+// Params:
+//	 entity = Pointer to the Entity.
+//   name = Pointer to the name to be checked.
+// Returns:
+//	 If the Entity pointer is valid and the two names match,
+//		then return true,
+//		else return false.
+bool EntityIsNamed(const Entity* entity, const char* name)
+{
+	if (entity) {
+		return strncmp(entity->name, name, _countof(entity->name)) == 0;
+	}
+
+	return false;
+}
+
+// Attach a Behavior component to an Entity.
+// (NOTE: This function must set the Behavior component's parent pointer by
+//	  calling the BehaviorSetParent() function.)
+// Params:
+//	 entity = Pointer to the Entity.
+//   behavior = Pointer to the Behavior component to be attached.
+void EntityAddBehavior(Entity* entity, Behavior* behavior)
+{
+	if (entity && behavior) {
+		entity->behavior = behavior;
+		BehaviorSetParent(behavior, entity);
+	}
+}
+
+// Get the Behavior component attached to an Entity.
+// Params:
+//	 entity = Pointer to the Entity.
+// Returns:
+//	 If the Entity pointer is valid,
+//		then return a pointer to the attached Behavior component,
+//		else return NULL.
+Behavior* EntityGetBehavior(const Entity* entity)
+{
+	if (entity) {
+		return entity->behavior;
+	}
+
+	return NULL;
 }
 
 // Dynamically allocate a clone of an existing Entity.
@@ -347,6 +432,7 @@ void EntityUpdate(Entity* entity, float dt)
 	{
 		AnimationUpdate(entity->animation, dt);
 		PhysicsUpdate(entity->physics, entity->transform, dt);
+		BehaviorUpdate(entity->behavior, dt);
 	}
 }
 

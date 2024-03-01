@@ -102,7 +102,7 @@ void BehaviorRead(Behavior* behavior, Stream stream)
 	if (behavior && stream) {
 		behavior->stateCurr = StreamReadInt(stream);
 		behavior->stateNext = StreamReadInt(stream);
-		behavior->timer = streamReadFloat(stream);
+		behavior->timer = StreamReadFloat(stream);
 	}
 }
 

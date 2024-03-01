@@ -144,13 +144,15 @@ void EntityDestroy(Entity* entity);
 //		else return false.
 bool EntityIsDestroyed(const Entity* entity);
 
-// Attach an Animation component to an Entity.
-// (NOTE: This function must set the animation component's parent pointer by
-//	  calling the AnimationSetParent() function.)
+// Compare the Entity's name with the specified name.
 // Params:
 //	 entity = Pointer to the Entity.
-//   animation = Pointer to the Animation component to be attached.
-void EntityAddAnimation(Entity* entity, Animation* animation);
+//   name = Pointer to the name to be checked.
+// Returns:
+//	 If the Entity pointer is valid and the two names match,
+//		then return true,
+//		else return false.
+bool EntityIsNamed(const Entity* entity, const char* name);
 
 // Attach a Behavior component to an Entity.
 // (NOTE: This function must set the Behavior component's parent pointer by
@@ -159,6 +161,23 @@ void EntityAddAnimation(Entity* entity, Animation* animation);
 //	 entity = Pointer to the Entity.
 //   behavior = Pointer to the Behavior component to be attached.
 void EntityAddBehavior(Entity* entity, Behavior* behavior);
+
+// Get the Behavior component attached to an Entity.
+// Params:
+//	 entity = Pointer to the Entity.
+// Returns:
+//	 If the Entity pointer is valid,
+//		then return a pointer to the attached Behavior component,
+//		else return NULL.
+Behavior* EntityGetBehavior(const Entity* entity);
+
+// Attach an Animation component to an Entity.
+// (NOTE: This function must set the animation component's parent pointer by
+//	  calling the AnimationSetParent() function.)
+// Params:
+//	 entity = Pointer to the Entity.
+//   animation = Pointer to the Animation component to be attached.
+void EntityAddAnimation(Entity* entity, Animation* animation);
 
 // Attach a Physics component to an Entity.
 // Params:
@@ -198,16 +217,6 @@ void EntitySetName(Entity* entity, const char * name);
 //		else return NULL.
 const char * EntityGetName(const Entity* entity);
 
-// Compare the Entity's name with the specified name.
-// Params:
-//	 entity = Pointer to the Entity.
-//   name = Pointer to the name to be checked.
-// Returns:
-//	 If the Entity pointer is valid and the two names match,
-//		then return true,
-//		else return false.
-bool EntityIsNamed(const Entity* entity, const char* name);
-
 // Get the Animation component attached to an Entity.
 // Params:
 //	 entity = Pointer to the Entity.
@@ -216,15 +225,6 @@ bool EntityIsNamed(const Entity* entity, const char* name);
 //		then return a pointer to the attached Animation component,
 //		else return NULL.
 Animation* EntityGetAnimation(const Entity* entity);
-
-// Get the Behavior component attached to an Entity.
-// Params:
-//	 entity = Pointer to the Entity.
-// Returns:
-//	 If the Entity pointer is valid,
-//		then return a pointer to the attached Behavior component,
-//		else return NULL.
-Behavior* EntityGetBehavior(const Entity* entity);
 
 // Get the Physics component attached to an Entity.
 // Params:

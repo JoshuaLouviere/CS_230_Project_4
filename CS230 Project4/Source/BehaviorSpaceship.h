@@ -28,6 +28,12 @@ extern "C" {
 
 typedef struct Behavior Behavior;
 
+//cSpaceshipInvalid = -1
+//cSpaceshipIdle
+//cSpaceshipThrust
+
+typedef enum { cSpaceshipInvalid = -1, cSpaceshipIdle, cSpaceshipThrust } cSpaceship;
+
 //------------------------------------------------------------------------------
 // Public Consts:
 //------------------------------------------------------------------------------
