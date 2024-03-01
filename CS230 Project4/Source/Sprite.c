@@ -21,6 +21,7 @@
 #include "Sprite.h"
 #include "Stream.h"
 #include "Mesh.h"
+#include "MeshLibrary.h"
 #include "Matrix2D.h"
 #include "DGL.h"
 #include "SpriteSource.h"
@@ -134,6 +135,9 @@ void SpriteRead(Sprite* sprite, Stream stream)
 	{
 		sprite->frameIndex = StreamReadInt(stream);
 		sprite->alpha = StreamReadFloat(stream);
+		const char* token = StreamReadToken(stream);
+		const Mesh* mesh = MeshLibraryBuild(token);
+		SpriteSetMesh(sprite, mesh);
 	}
 }
 

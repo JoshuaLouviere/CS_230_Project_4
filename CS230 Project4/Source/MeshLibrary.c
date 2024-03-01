@@ -14,6 +14,8 @@
 //------------------------------------------------------------------------------
 #include "stdafx.h"
 #include "MeshLibrary.h"
+#include "Mesh.h"
+#include "Stream.h"
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
@@ -45,7 +47,6 @@ typedef struct MeshLibrary
 
 } MeshLibrary;
 
-
 //------------------------------------------------------------------------------
 // Public Variables:
 //------------------------------------------------------------------------------
@@ -54,11 +55,28 @@ typedef struct MeshLibrary
 // Public Functions:
 //------------------------------------------------------------------------------
 
+//------------------------------------------------------------------------------
+// Private Variables:
+//------------------------------------------------------------------------------
+
+static MeshLibrary meshes;
+
+//------------------------------------------------------------------------------
+// Private Functions:
+//------------------------------------------------------------------------------
+
+static void MeshLibraryAdd(Mesh* mesh) {
+	if (mesh) {
+		meshes.meshList[meshes.meshCount] = mesh;
+		meshes.meshCount++;
+	}
+}
+
 // Initialize the Mesh Manager.
 // (NOTE: Make sure to initialize all memory to zero.)
 void MeshLibraryInit()
 {
-
+	memset(&meshes, 0, sizeof(meshes));
 }
 
 // Create a mesh and add it to the mesh manager.
@@ -77,11 +95,32 @@ void MeshLibraryInit()
 //	 If the mesh was created successfully,
 //	   then return a pointer to the created mesh,
 //	   else return NULL.
-const Mesh* MeshLibraryBuild(const char * meshName);
+const Mesh* MeshLibraryBuild(const char* meshName)
+{
+	char pathName[50];
+	sprintf_s(pathName, _countof(pathName), "Data/%s.txt", meshName);
+	Stream file = StreamOpen(pathName);
+	
+	if (file) {
+		Mesh* mesh = MeshCreate();
+		MeshRead(mesh, file);
+		MeshLibraryAdd(mesh);
+		StreamClose(&file);
+		return mesh;
+	}
+
+	return NULL;
+}
 
 // Free all Mesh objects in the Mesh Manager.
 // (NOTE: You must call MeshFree() to free each Mesh object.)
 // (HINT: The list should contain nothing but NULL pointers once this function is done.)
-void MeshLibraryFreeAll();
+void MeshLibraryFreeAll()
+{
+	int count = meshes.meshCount;
+	for (int i = 0; i < count; i++) {
+		MeshFree(&meshes.meshList[i]);
+	}
+}
 
 //------------------------------------------------------------------------------

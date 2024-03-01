@@ -121,7 +121,23 @@ void BehaviorSetParent(Behavior* behavior, Entity* parent)
 //	 behavior = Pointer to the Behavior component.
 //	 dt = Change in time (in seconds) since the last game loop.
 void BehaviorUpdate(Behavior* behavior, float dt) {
+	if (behavior) {
+		if (behavior->stateCurr != behavior->stateNext) {
+			if (behavior->onExit) {
+				behavior->onExit(behavior);
+			}
 
+			behavior->stateCurr = behavior->stateNext;
+
+			if (behavior->onInit) {
+				behavior->onInit(behavior);
+			}
+		}
+
+		if (behavior->onUpdate) {
+			behavior->onUpdate(behavior, dt);
+		}
+	}
 }
 
 //------------------------------------------------------------------------------

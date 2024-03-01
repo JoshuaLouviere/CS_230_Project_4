@@ -16,6 +16,7 @@
 #include "SceneSystem.h"
 #include "EntityContainer.h"
 #include "EntityFactory.h"
+#include "MeshLibrary.h"
 
 //------------------------------------------------------------------------------
 // Private Constants:
@@ -66,11 +67,13 @@ bool SceneIsValid(const Scene* scene)
 // Load the scene.
 void SceneLoad(const Scene* scene)
 {
-	entities = EntityContainerCreate();
 
 	// Verify that the function pointer is valid.
 	if (scene && (scene->load != NULL))
 	{
+		MeshLibraryInit();
+		entities = EntityContainerCreate();
+
 		// TODO: Call TraceMessage, passing the format string "%s: Load" and the name of the scene.
 		TraceMessage("%s: Load", scene->name);
 
@@ -96,11 +99,11 @@ void SceneInit(const Scene* scene)
 // Update the scene.
 void SceneUpdate(const Scene* scene, float dt)
 {
-	EntityContainerUpdateAll(entities, dt);
-
 	// Verify that the function pointer is valid.
 	if (scene && (scene->update != NULL))
 	{
+		EntityContainerUpdateAll(entities, dt);
+
 		// TODO: Call TraceMessage, passing the format string "%s: Update" and the name of the scene.
 		TraceMessage("%s: Update", scene->name);
 
@@ -130,6 +133,7 @@ void SceneExit(const Scene* scene)
 {	
 	EntityContainerFreeAll(entities);
 	EntityFactoryFreeAll();
+	MeshLibraryFreeAll();
 	// Verify that the function pointer is valid.
 	if (scene && (scene->exit != NULL))
 	{

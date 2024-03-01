@@ -48,9 +48,8 @@ typedef struct Physics
 	// Velocity may be stored as a direction vector and speed scalar, instead.
 	DGL_Vec2	velocity;
 
-	// Used when calculating acceleration due to forces.
-	// Used when resolving collision between two dynamic objects.
-	//float		inverseMass;
+	// Rotational velocity (in radians).
+	float rotationalVelocity;
 
 } Physics;
 
@@ -205,6 +204,55 @@ void PhysicsUpdate(Physics* physics, Transform* transform, float dt)
 		physics->oldTranslation.x = TransformGetTranslation(transform)->x;
 		physics->oldTranslation.y = TransformGetTranslation(transform)->y;
 		TransformSetTranslation(transform, &translation);
+
+		float rot = TransformGetRotation(transform);
+		float vel = PhysicsGetRotationalVelocity(physics);
+		TransformSetRotation(transform, (rot + vel) * dt);
+	}
+}
+
+// Dynamically allocate a clone of an existing Physics component.
+// (Hint: Perform a shallow copy of the member variables.)
+// Params:
+//	 other = Pointer to the component to be cloned.
+// Returns:
+//	 If 'other' is valid and the memory allocation was successful,
+//	   then return a pointer to the cloned component,
+//	   else return NULL.
+Physics* PhysicsClone(const Physics* other)
+{
+	Physics* physics = PhysicsCreate();
+	physics->acceleration = other->acceleration;
+	physics->oldTranslation = other->oldTranslation;
+	physics->velocity = other->velocity;
+	physics->rotationalVelocity = other->rotationalVelocity;
+	return physics;
+}
+
+// Get the rotational velocity of a physics component.
+// Params:
+//	 physics = Pointer to the physics component.
+// Returns:
+//	 If the physics pointer is valid,
+//		then return the component's rotational velocity value,
+//		else return 0.0f.
+float PhysicsGetRotationalVelocity(const Physics* physics)
+{
+	if (physics) {
+		return physics->rotationalVelocity;
+	}
+
+	return 0.0f;
+}
+
+// Set the rotational velocity of a physics component.
+// Params:
+//	 physics = Pointer to the physics component.
+//	 rotationalVelocity = The new rotational velocity.
+void PhysicsSetRotationalVelocity(Physics* physics, float rotationalVelocity)
+{
+	if (physics) {
+		physics->rotationalVelocity = rotationalVelocity;
 	}
 }
 

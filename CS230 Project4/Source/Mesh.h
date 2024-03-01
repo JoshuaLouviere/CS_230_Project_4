@@ -27,6 +27,7 @@ extern "C" {
 //------------------------------------------------------------------------------
 
 typedef struct Mesh Mesh;
+typedef FILE* Stream;
 
 //------------------------------------------------------------------------------
 // Public Constants:
@@ -60,6 +61,25 @@ typedef struct Mesh
 //------------------------------------------------------------------------------
 // Public Functions:
 //------------------------------------------------------------------------------
+
+// Dynamically allocate a new Mesh object but leave it empty.
+// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
+// Returns:
+//	 If the mesh was created successfully,
+//	   then return a pointer to the created Mesh,
+//	   else return NULL.
+Mesh* MeshCreate();
+
+// Read the properties of a Mesh object from a file.
+// (NOTE: First, read a token from the file and verify that it is "Mesh".)
+// (NOTE: Second, read a token and store it in the Mesh's name variable.)
+// (NOTE: Third, read an integer indicating the number of vertices to be read.)
+// (NOTE: For each vertex, read a Vector2D (position), a DGL_Color (color), and a Vector2D (UV).)
+// (HINT: Call DGL_Graphics_AddVertex() to add a single vertex to the mesh.)
+// Params:
+//   mesh = Pointer to the Mesh.
+//	 stream = The data stream used for reading.
+void MeshRead(Mesh* mesh, Stream stream);
 
 // Dynamically allocate a new Mesh object and create a quadrilateral mesh.
 // (Hint: Use calloc() to ensure that all member variables are initialized to 0.)

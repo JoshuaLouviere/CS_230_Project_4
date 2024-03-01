@@ -88,6 +88,21 @@ Physics* PhysicsCreate(void);
 //	   else return NULL.
 Physics* PhysicsClone(const Physics* other);
 
+// Get the rotational velocity of a physics component.
+// Params:
+//	 physics = Pointer to the physics component.
+// Returns:
+//	 If the physics pointer is valid,
+//		then return the component's rotational velocity value,
+//		else return 0.0f.
+float PhysicsGetRotationalVelocity(const Physics* physics);
+
+// Set the rotational velocity of a physics component.
+// Params:
+//	 physics = Pointer to the physics component.
+//	 rotationalVelocity = The new rotational velocity.
+void PhysicsSetRotationalVelocity(Physics* physics, float rotationalVelocity);
+
 // Free the memory associated with a Physics component.
 // (NOTE: The Physics pointer must be set to NULL.)
 // Params:
@@ -119,15 +134,6 @@ const Vector2D * PhysicsGetAcceleration(const Physics* physics);
 //		else return a NULL pointer.
 const Vector2D * PhysicsGetVelocity(const Physics* physics);
 
-// Get the rotational velocity of a physics component.
-// Params:
-//	 physics = Pointer to the physics component.
-// Returns:
-//	 If the physics pointer is valid,
-//		then return the component's rotational velocity value,
-//		else return 0.0f.
-float PhysicsGetRotationalVelocity(const Physics* physics);
-
 // Get the old translation (position) of a Physics component.
 // Params:
 //	 physics = Pointer to the Physics component.
@@ -148,12 +154,6 @@ void PhysicsSetAcceleration(Physics* physics, const Vector2D * acceleration);
 //	 physics = Pointer to the Physics component.
 //	 velocity = Pointer to a velocity vector.
 void PhysicsSetVelocity(Physics* physics, const Vector2D * velocity);
-
-// Set the rotational velocity of a physics component.
-// Params:
-//	 physics = Pointer to the physics component.
-//	 rotationalVelocity = The new rotational velocity.
-void PhysicsSetRotationalVelocity(Physics* physics, float rotationalVelocity);
 
 // Update the state of a Physics component using the Semi-Implicit Euler method,
 //	 as outlined in the "Dynamics" lecture slides and the project instructions.

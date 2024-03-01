@@ -108,7 +108,7 @@ static void Level2SceneLoad(void)
 static void Level2SceneInit()
 {
 	instance.entity = EntityFactoryBuild("SpaceshipHoming");
-	EntityFactoryBuild("SpaceshipHoming");
+	//EntityFactoryBuild("SpaceshipHoming");
 
 	if (instance.entity != NULL)
 	{

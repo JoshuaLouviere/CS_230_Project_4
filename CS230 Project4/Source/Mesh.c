@@ -14,6 +14,8 @@
 #include "stdafx.h"
 #include "DGL.h"
 #include "Mesh.h"
+#include "Stream.h"
+#include "Vector2D.h"
 
 //------------------------------------------------------------------------------
 // Include Files:
@@ -62,6 +64,54 @@ typedef struct Mesh
 // Public Functions:
 //------------------------------------------------------------------------------
 
+// Dynamically allocate a new Mesh object but leave it empty.
+// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
+// Returns:
+//	 If the mesh was created successfully,
+//	   then return a pointer to the created Mesh,
+//	   else return NULL.
+Mesh* MeshCreate()
+{
+	Mesh* mesh = calloc(1, sizeof(Mesh));
+
+	if (mesh) {
+		return mesh;
+	}
+
+	return NULL;
+}
+
+// Read the properties of a Mesh object from a file.
+// (NOTE: First, read a token from the file and verify that it is "Mesh".)
+// (NOTE: Second, read a token and store it in the Mesh's name variable.)
+// (NOTE: Third, read an integer indicating the number of vertices to be read.)
+// (NOTE: For each vertex, read a Vector2D (position), a DGL_Color (color), and a Vector2D (UV).)
+// (HINT: Call DGL_Graphics_AddVertex() to add a single vertex to the mesh.)
+// Params:
+//   mesh = Pointer to the Mesh.
+//	 stream = The data stream used for reading.
+void MeshRead(Mesh* mesh, Stream stream) {
+	const char* token = StreamReadToken(stream);
+
+	if (strcmp(token, "Mesh") == 0) {
+		token = StreamReadToken(stream);
+		sprintf_s(mesh->name, _countof(mesh->name), "%s", token);
+
+		int vertices = StreamReadInt(stream);
+		DGL_Graphics_StartMesh();
+		for (int i = 0; i < vertices; i++) {
+			Vector2D* vec = calloc(1, sizeof(Vector2D*));
+			StreamReadVector2D(stream, vec);
+			DGL_Color* color = calloc(1, sizeof(Vector2D*));
+			StreamReadColor(stream, color);
+			Vector2D* vec1 = calloc(1, sizeof(Vector2D*));
+			StreamReadVector2D(stream, vec1);
+			DGL_Graphics_AddVertex(vec, color, vec);
+			mesh->meshResource = DGL_Graphics_EndMesh();
+		}
+	}
+}
+
 // Dynamically allocate a new Mesh object and create a quadrilateral mesh.
 // (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
 // (Hint: The Mesh name can be stored using strcpy_s(). For example:
@@ -87,41 +137,14 @@ Mesh* MeshCreateQuad(float xHalfSize, float yHalfSize, float uSize, float vSize,
 
 	// This shape has 2 triangles
 	DGL_Graphics_AddTriangle(
-		&(DGL_Vec2) { -xHalfSize, -yHalfSize
-	}, & (DGL_Color) { 0.0f, 0.0f, 0.0f, 1.0f }, & (DGL_Vec2) { 0.0f, 0.0f },
-		& (DGL_Vec2) {
-		xHalfSize, yHalfSize
-	}, & (DGL_Color) {
-		0.0f, 0.0f, 0.0f, 1.0f
-	}, & (DGL_Vec2) {
-			uSize, -vSize
-		},
-			& (DGL_Vec2) {
-			xHalfSize, -yHalfSize
-		}, & (DGL_Color) {
-				0.0f, 0.0f, 0.0f, 1.0f
-			}, & (DGL_Vec2) {
-				uSize, 0.0f
-			});
+		&(DGL_Vec2) { -xHalfSize, -yHalfSize }, & (DGL_Color) { 0.0f, 0.0f, 0.0f, 1.0f }, & (DGL_Vec2) { 0.0f, 0.0f },
+		& (DGL_Vec2) { xHalfSize, yHalfSize }, & (DGL_Color) { 0.0f, 0.0f, 0.0f, 1.0f }, & (DGL_Vec2) { uSize, -vSize },
+		& (DGL_Vec2) { xHalfSize, -yHalfSize }, & (DGL_Color) { 0.0f, 0.0f, 0.0f, 1.0f }, & (DGL_Vec2) { uSize, 0.0f });
 	DGL_Graphics_AddTriangle(
-		&(DGL_Vec2) { -xHalfSize, -yHalfSize
-	}, & (DGL_Color) { 0.0f, 0.0f, 0.0f, 1.0f }, & (DGL_Vec2) { 0.0f, 0.0f },
-		& (DGL_Vec2) {
-		-xHalfSize, yHalfSize
-	}, & (DGL_Color) {
-		0.0f, 0.0f, 0.0f, 1.0f
-	}, & (DGL_Vec2) {
-			0.0f, -vSize
-		},
-			& (DGL_Vec2) {
-			xHalfSize, yHalfSize
-		}, & (DGL_Color) {
-				0.0f, 0.0f, 0.0f, 1.0f
-			}, & (DGL_Vec2) {
-				uSize, -vSize
-			});
+		&(DGL_Vec2) { -xHalfSize, -yHalfSize }, & (DGL_Color) { 0.0f, 0.0f, 0.0f, 1.0f }, & (DGL_Vec2) { 0.0f, 0.0f },
+		& (DGL_Vec2) { -xHalfSize, yHalfSize }, & (DGL_Color) { 0.0f, 0.0f, 0.0f, 1.0f }, & (DGL_Vec2) { 0.0f, -vSize },
+		& (DGL_Vec2) { xHalfSize, yHalfSize }, & (DGL_Color) { 0.0f, 0.0f, 0.0f, 1.0f }, & (DGL_Vec2) { uSize, -vSize });
 	  		
-
 	// Save the mesh (as a list of triangles).
 	if (mesh)
 	{
@@ -180,7 +203,7 @@ Mesh* MeshCreateSpaceship(void)
 //   mesh = Pointer to a Mesh to be rendered.
 void MeshRender(const Mesh* mesh)
 {
-	if (mesh)
+	if (mesh && mesh->meshResource)
 	{
 		DGL_Graphics_DrawMesh(mesh->meshResource, mesh->drawMode);
 	}
