@@ -347,21 +347,21 @@ void DemoSceneRender(void)
 	DGL_Camera_SetPosition(&posCamera);
 
 	// TODO: Display a simple, colored mesh.
-	DGL_Graphics_SetShaderMode(DGL_SM_COLOR);
+	DGL_Graphics_SetShaderMode(DGL_PSM_COLOR, DGL_VSM_DEFAULT);
 	DGL_Graphics_SetCB_Alpha(1.0f);
 	DGL_Graphics_SetCB_TintColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
 	DGL_Graphics_SetCB_TransformData(&posColored, &scaleColored, 0.f);
 	DGL_Graphics_DrawMesh(meshColor, DGL_DM_TRIANGLELIST);
 
 	// TODO: Draw a simple, colored mesh with a red (50%) tint.
-	DGL_Graphics_SetShaderMode(DGL_SM_COLOR);
+	DGL_Graphics_SetShaderMode(DGL_PSM_COLOR, DGL_VSM_DEFAULT);
 	DGL_Graphics_SetCB_Alpha(1.0f);
 	DGL_Graphics_SetCB_TintColor(&(DGL_Color) { 1.0f, 0.0f, 0.0f, 0.5f });
 	DGL_Graphics_SetCB_TransformData(&posTinted, &scaleColored, 0.f);
 	DGL_Graphics_DrawMesh(meshColor, DGL_DM_TRIANGLELIST);
 
 	// TODO: Draw a simple, textured mesh using the Ball texture.
-	DGL_Graphics_SetShaderMode(DGL_SM_TEXTURE);
+	DGL_Graphics_SetShaderMode(DGL_PSM_TEXTURE, DGL_VSM_DEFAULT);
 	DGL_Graphics_SetTexture(textureBall);
 	DGL_Graphics_SetCB_Alpha(1.0f);
 	DGL_Graphics_SetCB_TextureOffset(&uvOffset);
@@ -370,7 +370,7 @@ void DemoSceneRender(void)
 	DGL_Graphics_DrawMesh(meshTexture, DGL_DM_TRIANGLELIST);
 
 	// TODO: Draw a simple, textured mesh using the 2x2 texture.
-	DGL_Graphics_SetShaderMode(DGL_SM_TEXTURE);
+	DGL_Graphics_SetShaderMode(DGL_PSM_TEXTURE, DGL_VSM_DEFAULT);
 	DGL_Graphics_SetTextureSamplerData(DGL_TSM_POINT, DGL_AM_WRAP);
 	DGL_Graphics_SetTexture(textureSquare);
 	DGL_Graphics_SetCB_Alpha(1.0f);
@@ -381,20 +381,20 @@ void DemoSceneRender(void)
 	DGL_Graphics_SetTextureSamplerData(DGL_TSM_LINEAR, DGL_AM_WRAP);
 
 	// TODO: Draw a triangular, colored mesh.
-	DGL_Graphics_SetShaderMode(DGL_SM_COLOR);
+	DGL_Graphics_SetShaderMode(DGL_PSM_COLOR, DGL_VSM_DEFAULT);
 	DGL_Graphics_SetCB_Alpha(alpha);
 	DGL_Graphics_SetCB_TintColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
 	DGL_Graphics_SetCB_TransformData(&posSpaceship, &scaleColored, 0.f);
 	DGL_Graphics_DrawMesh(meshSpaceship, DGL_DM_TRIANGLELIST);
 
 	// TODO: Draw a 4-segment line strip.
-	DGL_Graphics_SetShaderMode(DGL_SM_COLOR);
+	DGL_Graphics_SetShaderMode(DGL_PSM_COLOR, DGL_VSM_DEFAULT);
 	DGL_Graphics_SetCB_Alpha(1.0f);
 	DGL_Graphics_SetCB_TintColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
 	DGL_Graphics_SetCB_TransformData(&(DGL_Vec2) { 0.f, 0.f }, & (DGL_Vec2) { 800.f, 600.f }, 0.f);
 	DGL_Graphics_DrawMesh(meshLine, DGL_DM_LINESTRIP);
 
-	DGL_Graphics_SetShaderMode(DGL_SM_COLOR);
+	DGL_Graphics_SetShaderMode(DGL_PSM_COLOR, DGL_VSM_DEFAULT);
 	DGL_Graphics_SetTexture(NULL);
 }
 

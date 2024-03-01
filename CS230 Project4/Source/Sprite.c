@@ -148,7 +148,7 @@ void SpriteRender(const Sprite* sprite, Transform* transform)
 		// Prepare to render a textured sprite
 		if (sprite->spriteSource)
 		{
-			DGL_Graphics_SetShaderMode(DGL_SM_TEXTURE);
+			DGL_Graphics_SetShaderMode(DGL_PSM_TEXTURE, DGL_VSM_DEFAULT);
 			// Set texture and texture offsets
 
 			SpriteSourceSetTexture(sprite->spriteSource);
@@ -156,7 +156,7 @@ void SpriteRender(const Sprite* sprite, Transform* transform)
 		}
 		else
 		{
-			DGL_Graphics_SetShaderMode(DGL_SM_COLOR);
+			DGL_Graphics_SetShaderMode(DGL_PSM_COLOR, DGL_VSM_DEFAULT);
 			DGL_Graphics_SetTexture(NULL);
 		}
 

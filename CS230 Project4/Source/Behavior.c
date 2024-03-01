@@ -102,7 +102,7 @@ void BehaviorRead(Behavior* behavior, Stream stream)
 	if (behavior && stream) {
 		behavior->stateCurr = StreamReadInt(stream);
 		behavior->stateNext = StreamReadInt(stream);
-		behavior->timer = streamReadFloat(stream);
+		behavior->timer = StreamReadFloat(stream);
 	}
 }
 
@@ -121,7 +121,8 @@ void BehaviorSetParent(Behavior* behavior, Entity* parent)
 //	 behavior = Pointer to the Behavior component.
 //	 dt = Change in time (in seconds) since the last game loop.
 void BehaviorUpdate(Behavior* behavior, float dt) {
-
+	behavior = behavior;
+	dt = dt;
 }
 
 //------------------------------------------------------------------------------

@@ -101,7 +101,8 @@ const Scene* Level2SceneGetInstance(void)
 // Load any resources used by the scene.
 static void Level2SceneLoad(void)
 {
-	instance.mesh = MeshCreateSpaceship();
+	instance.mesh = MeshCreate();
+	MeshBuildSpaceship(instance.mesh);
 }
 
 // Initialize the variables used by the scene.

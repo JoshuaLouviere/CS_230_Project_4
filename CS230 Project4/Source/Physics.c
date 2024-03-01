@@ -86,7 +86,7 @@ Physics* PhysicsCreate(void)
 //	 physics = Pointer to the Physics component pointer.
 void PhysicsFree(Physics** physics)
 {
-	if (physics)
+	if (*physics)
 	{
 		(*physics)->oldTranslation.x = 0.0f;
 		(*physics)->oldTranslation.y = 0.0f;

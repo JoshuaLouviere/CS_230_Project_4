@@ -2,22 +2,21 @@
 //
 // File Name:	Mesh.h
 // Author(s):	Doug Schilling (dschilling)
-// Project:		Project 2
-// Course:		CS230S23
+// Project:		Project 4
+// Course:		CS230S24
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright © 2024 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
-
-
-
-#include "stdafx.h"
-#include "DGL.h"
-#include "Mesh.h"
 
 //------------------------------------------------------------------------------
 // Include Files:
 //------------------------------------------------------------------------------
+
+#include "stdafx.h"
+#include "DGL.h"
+#include "Mesh.h"
+#include "Stream.h"
 
 //------------------------------------------------------------------------------
 
@@ -26,11 +25,7 @@
 //------------------------------------------------------------------------------
 
 typedef struct Mesh Mesh;
-
-#ifdef __cplusplus
-extern "C" {
-	/* Assume C declarations for C++ */
-#endif
+typedef FILE* Stream;
 
 //------------------------------------------------------------------------------
 // Public Constants:
@@ -58,120 +53,113 @@ typedef struct Mesh
 // Public Variables:
 //------------------------------------------------------------------------------
 
+// DGL_Color Constants:
+static const DGL_Color DGL_Color_Black = { 0.0f, 0.0f, 0.0f, 1.0f };
+static const DGL_Color DGL_Color_White = { 1.0f, 1.0f, 1.0f, 1.0f };
+static const DGL_Color DGL_Color_Red = { 1.0f, 0.0f, 0.0f, 1.0f };
+static const DGL_Color DGL_Color_Green = { 0.0f, 1.0f, 0.0f, 1.0f };
+static const DGL_Color DGL_Color_Blue = { 0.0f, 0.0f, 1.0f, 1.0f };
+static const DGL_Color DGL_Color_Cyan = { 0.0f, 1.0f, 1.0f, 1.0f };
+static const DGL_Color DGL_Color_Magenta = { 1.0f, 0.0f, 1.0f, 1.0f };
+static const DGL_Color DGL_Color_Yellow = { 1.0f, 1.0f, 0.0f, 1.0f };
+
 //------------------------------------------------------------------------------
 // Public Functions:
 //------------------------------------------------------------------------------
+
+// Dynamically allocate a new Mesh object but leave it empty.
+// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
+// Returns:
+//	 If the mesh was created successfully,
+//	   then return a pointer to the created Mesh,
+//	   else return NULL.
+Mesh* MeshCreate() 
+{
+	Mesh* mesh = calloc(1, sizeof(mesh));
+
+	if (mesh) 
+	{
+		return mesh;
+	}
+	return NULL;
+}
 
 // Dynamically allocate a new Mesh object and create a quadrilateral mesh.
 // (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
 // (Hint: The Mesh name can be stored using strcpy_s(). For example:
 //    strcpy_s(mesh->name, _countof(mesh->name), name); )
-// (Hint: The DGL_Mesh object must be created using DGL_Graphics_StartMesh,
-//    DGL_Graphics_AddTriangle, and DGL_Graphics_EndMesh.)
+// (NOTE: The drawMode should be set to DGL_DM_TRIANGLELIST.)
 // Params:
+//   mesh = Pointer to an existing, empty Mesh object.
 //	 xHalfSize = The X half-size of the mesh.
 //	 yHalfSize = The Y half-size of the mesh.
 //   uSize = The U size of the mesh, relative to texture coordinates (0.0 .. 1.0).
 //   vSize = The V size of the mesh, relative to texture coordinates (0.0 .. 1.0).
 //	 name = A name for the mesh.
-// Returns:
-//	 If the mesh was created successfully,
-//	   then return a pointer to the created Mesh,
-//	   else return NULL.
-Mesh* MeshCreateQuad(float xHalfSize, float yHalfSize, float uSize, float vSize, const char* name)
-{ 
-	Mesh* mesh = calloc(1, sizeof(Mesh));
-	  		
-	// Inform the library that we're about to start adding triangles.
+void MeshBuildQuad(Mesh* mesh, float xHalfSize, float yHalfSize, float uSize, float vSize, const char* name)
+{
+	strcpy_s(mesh->name, _countof(mesh->name), name);
 	DGL_Graphics_StartMesh();
-
-	// This shape has 2 triangles
 	DGL_Graphics_AddTriangle(
-		&(DGL_Vec2) { -xHalfSize, -yHalfSize
-	}, & (DGL_Color) { 0.0f, 0.0f, 0.0f, 1.0f }, & (DGL_Vec2) { 0.0f, 0.0f },
-		& (DGL_Vec2) {
-		xHalfSize, yHalfSize
-	}, & (DGL_Color) {
-		0.0f, 0.0f, 0.0f, 1.0f
-	}, & (DGL_Vec2) {
-			uSize, -vSize
-		},
-			& (DGL_Vec2) {
-			xHalfSize, -yHalfSize
-		}, & (DGL_Color) {
-				0.0f, 0.0f, 0.0f, 1.0f
-			}, & (DGL_Vec2) {
-				uSize, 0.0f
-			});
+		&(DGL_Vec2){ -xHalfSize, -yHalfSize }, &DGL_Color_Red, &(DGL_Vec2){ 0.0f, 0.0f },
+		&(DGL_Vec2){  xHalfSize, yHalfSize }, &DGL_Color_Green, &(DGL_Vec2){ uSize, -vSize },
+		&(DGL_Vec2){ xHalfSize, -yHalfSize}, &DGL_Color_Blue, &(DGL_Vec2){ uSize, 0.0f });
 	DGL_Graphics_AddTriangle(
-		&(DGL_Vec2) { -xHalfSize, -yHalfSize
-	}, & (DGL_Color) { 0.0f, 0.0f, 0.0f, 1.0f }, & (DGL_Vec2) { 0.0f, 0.0f },
-		& (DGL_Vec2) {
-		-xHalfSize, yHalfSize
-	}, & (DGL_Color) {
-		0.0f, 0.0f, 0.0f, 1.0f
-	}, & (DGL_Vec2) {
-			0.0f, -vSize
-		},
-			& (DGL_Vec2) {
-			xHalfSize, yHalfSize
-		}, & (DGL_Color) {
-				0.0f, 0.0f, 0.0f, 1.0f
-			}, & (DGL_Vec2) {
-				uSize, -vSize
-			});
-	  		
-
-	// Save the mesh (as a list of triangles).
-	if (mesh)
-	{
-		mesh->meshResource = DGL_Graphics_EndMesh();
-		strcpy_s(mesh->name, _countof(mesh->name), name);
-		return mesh;
-	}
-
-	return NULL;
+		&(DGL_Vec2){ -xHalfSize, -0.5f }, &DGL_Color_Cyan, &(DGL_Vec2){ 0.0f, 0.0f },
+		&(DGL_Vec2){ -xHalfSize,  0.5f }, &DGL_Color_Magenta, &(DGL_Vec2){ 0.0f, -vSize },
+		&(DGL_Vec2){  xHalfSize,  0.5f }, &DGL_Color_Yellow, &(DGL_Vec2){ uSize, -vSize });
+	mesh->meshResource = DGL_Graphics_EndMesh();
 }
 
-// Create a "spaceship" mesh.
-// (NOTE: This must be a "unit"-sized triangular mesh as described in the Project 2 instructions.)
-// (NOTE: The Mesh object must first be made using calloc().)
-// (NOTE: The Mesh name can be stored using strcpy_s().)
+// Build a "spaceship" mesh and store it in the specified Mesh object.
+// (NOTE: This must be a "unit"-sized triangular mesh with the same characteristics as
+//    the "triangular, colored mesh" created in DemoScene.c.)
 // (NOTE: The DGL_Mesh object must be created using DGL_Graphics_StartMesh,
 //    DGL_Graphics_AddTriangle, and DGL_Graphics_EndMesh.)
-// Returns:
-//	 If the mesh was created successfully,
-//	   then return a pointer to the created Mesh,
-//	   else return NULL.
-Mesh* MeshCreateSpaceship(void)
+// (NOTE: The Mesh name can be stored using strcpy_s().)
+// (NOTE: The drawMode should be set to DGL_DM_TRIANGLELIST.)
+// Params:
+//   mesh = Pointer to an existing, empty Mesh object.
+void MeshBuildSpaceship(Mesh* mesh)
 {
-	Mesh* mesh = calloc(1, sizeof(Mesh));
-
+	//mesh = calloc(1, sizeof(Mesh));
+	strcpy_s(mesh->name, _countof(mesh->name), "Spaceship");
 	DGL_Graphics_StartMesh();
 	DGL_Graphics_AddTriangle(
-		&(DGL_Vec2) { 0.5f, 0.0f }, & (DGL_Color) { 1.0f, 1.0f, 0.0f, 1.0f }, & (DGL_Vec2) { 0.0f, 0.0f },
-		& (DGL_Vec2) {
-		-0.5f, -0.5f
-	}, & (DGL_Color) {
-		1.0f, 0.0f, 0.0f, 1.0f
-	}, & (DGL_Vec2) {
-			0.0f, 0.0f
-		},
-			& (DGL_Vec2) {
-			-0.5f, 0.5f
-		}, & (DGL_Color) {
-				1.0f, 0.0f, 0.0f, 1.0f
-			}, & (DGL_Vec2) {
-				0.0f, 0.0f
-			});
-	if (mesh)
-	{
-		mesh->meshResource = DGL_Graphics_EndMesh();
-		strcpy_s(mesh->name, _countof("spaceship"), "spaceship");
-		return mesh;
-	}
+		&(DGL_Vec2){  0.5f,  0.0f }, &DGL_Color_Yellow, &(DGL_Vec2){ 0.0f, 0.0f },
+		&(DGL_Vec2){ -0.5f, -0.5f }, &DGL_Color_Red, &(DGL_Vec2){ 0.0f, 0.0f },
+		&(DGL_Vec2){ -0.5f,  0.5f }, &DGL_Color_Red, &(DGL_Vec2){ 0.0f, 0.0f });
+	mesh->meshResource = DGL_Graphics_EndMesh();
+	mesh->drawMode = DGL_DM_TRIANGLELIST;
+}
 
-	return NULL;
+// Read the properties of a Mesh object from a file.
+// (NOTE: First, read a token from the file and verify that it is "Mesh".)
+// (NOTE: Second, read a token and store it in the Mesh's name variable.)
+// (NOTE: Third, read an integer indicating the number of vertices to be read.)
+// (NOTE: For each vertex, read a Vector2D (position), a DGL_Color (color), and a Vector2D (UV).)
+// (HINT: Call DGL_Graphics_AddVertex() to add a single vertex to the mesh.)
+// Params:
+//   mesh = Pointer to the Mesh.
+//	 stream = The data stream used for reading.
+void MeshRead(Mesh* mesh, Stream stream)
+{
+	if (mesh && stream)
+	{
+		const char* token = StreamReadToken(stream);
+		if (strcmp(token, "Mesh") == 0)
+		{
+			token = StreamReadToken(stream);
+			strcpy_s(mesh->name, _countof(mesh->name), token);
+
+			int verticeCount = StreamReadInt(stream);
+
+			int i;
+			for (i = 0; i < verticeCount; i++) {
+				printf("NO\n");
+			}
+		}
+	}
 }
 
 // Render a mesh.
@@ -180,9 +168,9 @@ Mesh* MeshCreateSpaceship(void)
 //   mesh = Pointer to a Mesh to be rendered.
 void MeshRender(const Mesh* mesh)
 {
-	if (mesh)
+	if (mesh && mesh->meshResource)
 	{
-		DGL_Graphics_DrawMesh(mesh->meshResource, mesh->drawMode);
+		DGL_Graphics_DrawMesh(mesh->meshResource, DGL_DM_TRIANGLELIST);
 	}
 }
 
@@ -194,15 +182,12 @@ void MeshRender(const Mesh* mesh)
 //   mesh = Pointer to the Mesh pointer.
 void MeshFree(Mesh** mesh)
 {
-	if (mesh)
+	if (*mesh)
 	{
 		DGL_Graphics_FreeMesh(&(*mesh)->meshResource);
 		free(*mesh);
 		*mesh = NULL;
 	}
 }
-//------------------------------------------------------------------------------
 
-#ifdef __cplusplus
-}                       /* End of extern "C" { */
-#endif
+//------------------------------------------------------------------------------

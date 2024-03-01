@@ -170,19 +170,26 @@ static void Level1SceneInit()
 {
 	//printf("456\n");
 
-	instance.monkeyMesh = MeshCreateQuad(0.5, 0.5, 1.0f / 3, 1.0f / 3, "Mesh3x3");
-	instance.livesTextMesh = MeshCreateQuad(0.5, 0.5, 1.0f / 16, 1.0f / 8, "Mesh16x8");
-	instance.mesh = MeshCreateQuad(0.5f, 0.5f, 1.0f, 1.0f, "Mesh1x1");
+	//instance.monkeyMesh = MeshCreate();
+	//instance.livesTextMesh = MeshCreate();
+	//instance.mesh = MeshCreate();
+
+	MeshBuildQuad(instance.monkeyMesh, 0.5, 0.5, 1.0f / 3, 1.0f / 3, "Mesh3x3");
+	MeshBuildQuad(instance.livesTextMesh, 0.5, 0.5, 1.0f / 16, 1.0f / 8, "Mesh16x8");
+	MeshBuildQuad(instance.mesh, 0.5f, 0.5f, 1.0f, 1.0f, "Mesh1x1");
+
 	instance.spriteSource = SpriteSourceCreate();
 	instance.monkeyIdleSpriteSource = SpriteSourceCreate();
 	instance.monkeyJumpSpriteSource = SpriteSourceCreate();
 	instance.monkeyWalkSpriteSource = SpriteSourceCreate();
 	instance.livesTextSpriteSource = SpriteSourceCreate();
+
 	SpriteSourceLoadTexture(instance.spriteSource, 1, 1, "./Assets/PlanetTexture.png");
 	SpriteSourceLoadTexture(instance.monkeyIdleSpriteSource, 1, 1, "./Assets/MonkeyIdle.png");
 	SpriteSourceLoadTexture(instance.monkeyWalkSpriteSource, 3, 3, "./Assets/MonkeyWalk.png");
 	SpriteSourceLoadTexture(instance.monkeyJumpSpriteSource, 1, 1, "./Assets/MonkeyJump.png");
 	SpriteSourceLoadTexture(instance.livesTextSpriteSource, 16, 8, "./Assets/Roboto_Mono_black.png");
+
 	instance.entity = EntityFactoryBuild("PlanetBounce");
 	instance.monkey = EntityFactoryBuild("Monkey");
 	instance.livesText = EntityFactoryBuild("MonkeyLivesText");
