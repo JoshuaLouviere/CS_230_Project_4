@@ -89,7 +89,7 @@ SpriteSource* SpriteSourceCreate()
 //	 spriteSource = Pointer to the SpriteSource pointer.
 void SpriteSourceFree(SpriteSource** spriteSource)
 {
-	if (spriteSource)
+	if (*spriteSource)
 	{
 		free(*spriteSource);
 		*spriteSource = NULL;
@@ -159,7 +159,7 @@ void SpriteSourceGetUV(const SpriteSource* spriteSource, unsigned int frameIndex
 //	 spriteSource = Pointer to the SpriteSource object.
 void SpriteSourceSetTexture(const SpriteSource* spriteSource)
 {
-	if (spriteSource)
+	if (spriteSource->texture)
 	{
 		DGL_Graphics_SetTexture(spriteSource->texture);
 	}

@@ -23,6 +23,7 @@
 #include "Transform.h"
 #include "Entity.h"
 #include "EntityFactory.h"
+#include "Scene.h"
 
 //------------------------------------------------------------------------------
 
@@ -108,6 +109,8 @@ static void BehaviorSpaceshipUpdateVelocity(Behavior* behavior, float dt)
 
 		Vector2D* vel = (Vector2D *)PhysicsGetVelocity(phy);
 		Vector2DScaleAdd(vel, dir, vel, spaceshipAcceleration * dt);
+
+		PhysicsSetVelocity(phy, vel);
 	}
 
 
@@ -119,26 +122,27 @@ static void BehaviorSpaceshipUpdateWeapon(Behavior* behavior, float dt)
 			Decrement the behavior timer by ‘dt’.
 			If the behavior timer < 0,
 		•	Set the behavior timer = 0
-		o	If spacebar(‘ ‘) is pressed,
+	o	If spacebar(‘ ‘) is pressed,
 			If behavior timer <= 0
 		•	Call BehaviorSpaceshipSpawnBullet
 		•	Set behavior timer = spaceshipWeaponCooldownTime*/
 	if (behavior->timer > 0) {
 		behavior->timer -= dt;
-		if (behavior->timer < 0) {
+		if (behavior->timer <= 0) {
 			behavior->timer = 0;
 		}
-		if (DGL_Input_KeyDown(VK_SPACE)) {
-			if (behavior->timer <= 0) {
-				BehaviorSpaceshipSpawnBullet(behavior);
-				behavior->timer = spaceshipWeaponCooldownTime;
-			}
+	}
+	
+	if (DGL_Input_KeyDown(VK_SPACE)) {
+		if (behavior->timer <= 0) {
+			BehaviorSpaceshipSpawnBullet(behavior);
+			behavior->timer = spaceshipWeaponCooldownTime;
+			printf("Shoot\n");
 		}
 	}
 }
 static void BehaviorSpaceshipSpawnBullet(Behavior* behavior)
 {
-	UNREFERENCED_PARAMETER(behavior);
 	/*o	Call EntityFactoryBuild to build a new ‘Bullet’ Entity.
 			NOTE : The ‘entityName’ parameter is case-sensitive!
 		o	If the Bullet was cloned successfully
@@ -147,12 +151,24 @@ static void BehaviorSpaceshipSpawnBullet(Behavior* behavior)
 			Get a unit vector in direction of the spaceship’s ‘rotation’.
 			Set the bullet’s velocity = direction * spaceshipWeaponBulletSpeed
 			Add the cloned bullet to the Entity manager’s active list.*/
-	Entity* ent = EntityFactoryBuild("Bullet");
+  	Entity* ent = EntityFactoryBuild("Bullet");
 	if (ent) {
 		Transform* tran = EntityGetTransform(behavior->parent);
 		float rot = TransformGetRotation(tran);
-		Vector2D* pos = TransformGetTranslation(tran);
-		
+		const Vector2D* pos = TransformGetTranslation(tran);
+		Transform* bulTran = EntityGetTransform(ent);
+		TransformSetTranslation(bulTran, pos);
+		TransformSetRotation(bulTran, rot);
+
+		Vector2D* dir = calloc(1, sizeof(Vector2D));
+		Vector2DFromAngleRad(dir, rot);
+
+		Physics* bulPhy = EntityGetPhysics(ent);
+		//bulPhy->oldTranslation = (Vector2D*){ behavior};
+		Vector2D* vel = calloc(1, sizeof(Vector2D));
+		Vector2DScale(vel, dir, spaceshipWeaponBulletSpeed);
+		PhysicsSetVelocity(bulPhy, vel);
+		SceneAddEntity(ent);
 	}
 }
 
@@ -208,9 +224,6 @@ void BehaviorSpaceshipUpdate(Behavior* behavior, float dt)
 			}
 			break;
 	}
-
-	
-	BehaviorSpaceshipSpawnBullet(behavior);
 }
 
 // Exit the current state of the behavior component.

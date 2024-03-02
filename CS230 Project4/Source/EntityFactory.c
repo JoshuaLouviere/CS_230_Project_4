@@ -58,17 +58,16 @@ Entity* EntityFactoryBuild(const char* entityName)
 		return NULL;
 	} 
 
-	char pathName[50] = "";
-	sprintf_s(pathName, _countof(pathName), "Data/%s.txt", entityName);
-	// printf("%s\n", pathName);
-	FILE* file = StreamOpen(pathName);
-
 	if (archetypes == NULL) {
 		archetypes = EntityContainerCreate();
 	}
 
 	if (EntityContainerFindByName(archetypes, entityName) == NULL) {
-		printf("Success\n");
+		char pathName[50] = "";
+		sprintf_s(pathName, _countof(pathName), "Data/%s.txt", entityName);
+		// printf("%s\n", pathName);
+		FILE* file = StreamOpen(pathName);
+
 		if (file)
 		{
 			const char* token = StreamReadToken(file);
@@ -86,6 +85,11 @@ Entity* EntityFactoryBuild(const char* entityName)
 
 			StreamClose(&file);
 		}
+	}
+	else 
+	{
+		Entity* clone = EntityClone(EntityContainerFindByName(archetypes, entityName));
+		return clone;
 	}
 	
 

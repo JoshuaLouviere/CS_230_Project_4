@@ -71,8 +71,8 @@ void SceneLoad(const Scene* scene)
 	// Verify that the function pointer is valid.
 	if (scene && (scene->load != NULL))
 	{
-		MeshLibraryInit();
 		entities = EntityContainerCreate();
+		MeshLibraryInit();
 
 		// TODO: Call TraceMessage, passing the format string "%s: Load" and the name of the scene.
 		TraceMessage("%s: Load", scene->name);
@@ -115,15 +115,16 @@ void SceneUpdate(const Scene* scene, float dt)
 // Render the scene.
 void SceneRender(const Scene* scene)
 {
-	EntityContainerRenderAll(entities);
 
 	// Verify that the function pointer is valid.
 	if (scene && (scene->render != NULL))
 	{
+
 		// TODO: Call TraceMessage, passing the format string "%s: Render" and the name of the scene.
 		TraceMessage("%s: Render", scene->name);
 
 		// Execute the Load function.
+		EntityContainerRenderAll(entities);
 		(*scene->render)();
 	}
 }
@@ -131,9 +132,6 @@ void SceneRender(const Scene* scene)
 // Exit the scene.
 void SceneExit(const Scene* scene)
 {	
-	EntityContainerFreeAll(entities);
-	EntityFactoryFreeAll();
-	MeshLibraryFreeAll();
 	// Verify that the function pointer is valid.
 	if (scene && (scene->exit != NULL))
 	{
@@ -142,6 +140,10 @@ void SceneExit(const Scene* scene)
 
 		// Execute the Load function.
 		(*scene->exit)();
+
+		EntityContainerFreeAll(entities);
+		EntityFactoryFreeAll();
+		MeshLibraryFreeAll();
 	}
 }
 

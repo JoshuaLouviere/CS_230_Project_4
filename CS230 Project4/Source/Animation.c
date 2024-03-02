@@ -79,6 +79,25 @@ static void AnimationAdvanceFrame(Animation* animation);
 // Public Functions:
 //------------------------------------------------------------------------------
 
+// Dynamically allocate a clone of an existing Animation component.
+// (Hint: Perform a shallow copy of the member variables.)
+// Params:
+//	 other = Pointer to the component to be cloned.
+// Returns:
+//	 If 'other' is valid and the memory allocation was successful,
+//	   then return a pointer to the cloned component,
+//	   else return NULL.
+Animation* AnimationClone(const Animation* other)
+{
+	Animation* anim = AnimationCreate();
+
+	if (other) {
+		*anim = *other;
+	}
+
+	return anim;
+}
+
 // Dynamically allocate a new Animation component.
 // (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
 Animation* AnimationCreate(void)
@@ -99,7 +118,7 @@ Animation* AnimationCreate(void)
 //	 animation = Pointer to the Animation pointer.
 void AnimationFree(Animation** animation)
 {
-	if (animation)
+	if (*animation)
 	{
 		free(*animation);
 		*animation = NULL;
@@ -172,7 +191,6 @@ static void AnimationAdvanceFrame(Animation* animation)
 			if (animation->isLooping == true)
 			{
 				animation->frameIndex = 0;
-
 			}
 			else
 			{

@@ -131,34 +131,6 @@ static void Level2SceneUpdate(float dt)
 	//   it when you are ready to test out a new scene.
 	Level2SceneMovementController(instance.entity);
 	EntityUpdate(instance.entity, dt);
-	
-	Sprite* sprite = EntityGetSprite(instance.entity);
-	if (DGL_Input_KeyTriggered('Z'))
-	{
-		SpriteSetAlpha(sprite, 0.5f);
-	}
-	else if (DGL_Input_KeyTriggered('X'))
-	{
-		SpriteSetAlpha(sprite, 1.0f);
-	}
-	else if (DGL_Input_KeyTriggered('0'))
-	{
-		SceneSystemSetNext(DemoSceneGetInstance());
-	}
-	else if (DGL_Input_KeyTriggered('1'))
-	{
-		SceneSystemSetNext(Level1SceneGetInstance());
-	}
-	else if (DGL_Input_KeyTriggered('2'))
-	{
-		SceneRestart();
-	}
-	else if (DGL_Input_KeyTriggered('9'))
-	{
-		SceneSystemSetNext(SandboxSceneGetInstance());
-	}
-
-		
 }
 
 // Render the scene.

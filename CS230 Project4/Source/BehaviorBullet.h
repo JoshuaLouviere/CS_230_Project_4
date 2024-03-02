@@ -44,6 +44,8 @@ typedef struct Behavior Behavior;
 // Public Functions:
 //------------------------------------------------------------------------------
 
+typedef enum { cBulletInvalid = -1, cBulletIdle } cBullet;
+
 // Dynamically allocate a new (Bullet) behavior component.
 // (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
 Behavior* BehaviorBulletCreate(void);

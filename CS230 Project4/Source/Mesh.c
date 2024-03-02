@@ -107,8 +107,8 @@ void MeshRead(Mesh* mesh, Stream stream) {
 			Vector2D* vec1 = calloc(1, sizeof(Vector2D*));
 			StreamReadVector2D(stream, vec1);
 			DGL_Graphics_AddVertex(vec, color, vec);
-			mesh->meshResource = DGL_Graphics_EndMesh();
 		}
+		mesh->meshResource = DGL_Graphics_EndMesh();
 	}
 }
 
@@ -217,7 +217,7 @@ void MeshRender(const Mesh* mesh)
 //   mesh = Pointer to the Mesh pointer.
 void MeshFree(Mesh** mesh)
 {
-	if (mesh)
+	if (*mesh)
 	{
 		DGL_Graphics_FreeMesh(&(*mesh)->meshResource);
 		free(*mesh);

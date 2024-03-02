@@ -61,7 +61,7 @@ typedef struct EntityContainer
 	// This variable is not required but could be used for different purposes.
 	// - For storing the maximum size of the container.
 	// - For tracking peak usage of the container, used for testing purposes.
-	unsigned entityMax;
+	int entityMax;
 
 	// This list can be a fixed-length array (minimum size of 100 entries)
 	// or a dynamically sized array, such as a linked list.
@@ -92,6 +92,7 @@ EntityContainer* EntityContainerCreate() {
 
 	if (entityC)
 	{
+		entityC->entityMax = 200;
 		entityC->entityCount = 0;
 		return entityC;
 	}
@@ -121,10 +122,21 @@ void EntityContainerFree(EntityContainer** entities) {
 //		else return false.
 bool EntityContainerAddEntity(EntityContainer* entities, Entity* entity) 
 {
-	entities->entities[entities->entityCount] = entity;
-	entities->entityCount++;
-	if (entities->entities[entities->entityCount - 1]) {
-		return true;
+	if (entities) {
+		if (entities->entityCount >= entities->entityMax) {
+			EntityFree(&entity);
+			return false;
+		}
+		if (entities->entityCount != entities->entityMax) {
+			for (int i = 0; i < entities->entityMax; i++) {
+				if (entities->entities[i] == NULL) {
+					entities->entities[i] = entity;
+					entities->entityCount++;
+					return true;
+				}
+			}
+		}
+		
 	}
 
 	return false;
@@ -142,11 +154,9 @@ bool EntityContainerAddEntity(EntityContainer* entities, Entity* entity)
 Entity* EntityContainerFindByName(const EntityContainer* entities, const char* entityName) 
 {
 	if (entities) {
-		int i = 0;
 		int count = entities->entityCount;
-		for (i = 0; i < count; i++) {
-			const char* thisName = EntityGetName(entities->entities[i]);
-			if (strcmp(thisName, entityName) == 0) {
+		for (int i = 0; i < count; i++) {
+			if (EntityIsNamed(entities->entities[i], entityName)) {
 				return entities->entities[i];
 			}
 		}
@@ -185,6 +195,11 @@ void EntityContainerUpdateAll(EntityContainer* entities, float dt)
 		int i = 0;
 		int count = entities->entityCount;
 		for (i = 0; i < count; i++) {
+			if (EntityIsDestroyed(entities->entities[i])) {
+  				EntityFree(&entities->entities[i]);
+				entities->entityCount--;
+			}
+
 			EntityUpdate(entities->entities[i], dt);
 		}
 	}
@@ -197,9 +212,8 @@ void EntityContainerUpdateAll(EntityContainer* entities, float dt)
 void EntityContainerRenderAll(const EntityContainer* entities)
 {
 	if (entities) {
-		int i = 0;
 		int count = entities->entityCount;
-		for (i = 0; i < count; i++) {
+		for (int i = 0; i < count; i++) {
 			EntityRender(entities->entities[i]);
 		}
 	}

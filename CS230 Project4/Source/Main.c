@@ -13,7 +13,7 @@
 #include <windows.h>
 
 #include "DGL.h"
-
+#include "CheatSystem.h"
 #include "Engine.h"
 #include "PlatformSystem.h"
 #include "SceneSystem.h"
@@ -33,6 +33,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE prevInstanceH, _
 
 	// NOTE: Certain modules need to be initialized first.
 	EngineAddSystem(PlatformSystemGetInstance(hInstance, show));
+
+	#ifdef _DEBUG 
+	EngineAddSystem(CheatSystemGetInstance());
+	#endif directives
+
 	EngineAddSystem(SceneSystemGetInstance());
 
 	// NOTE: Other systems can be initialized later and in any order.

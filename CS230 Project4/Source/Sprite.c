@@ -141,13 +141,31 @@ void SpriteRead(Sprite* sprite, Stream stream)
 	}
 }
 
+// Dynamically allocate a clone of an existing Sprite.
+// (Hint: Perform a shallow copy of the member variables.)
+// Params:
+//	 other = Pointer to the component to be cloned.
+// Returns:
+//	 If 'other' is valid and the memory allocation was successful,
+//	   then return a pointer to the cloned component,
+//	   else return NULL.
+Sprite* SpriteClone(const Sprite* other)
+{
+	Sprite* sprite = SpriteCreate();
+	if (sprite && other) {
+		*sprite = *other;
+	}
+	
+	return sprite;
+}
+
 // Render a Sprite (Sprite can be textured or untextured).
 // Params:
 //	 sprite = Pointer to the Sprite component.
 //   transform = Pointer to the Transform component.
 void SpriteRender(const Sprite* sprite, Transform* transform)
 {
-	if (sprite)
+	if (sprite && transform)
 	{
 		// Prepare to render a textured sprite
 		if (sprite->spriteSource)
@@ -155,6 +173,7 @@ void SpriteRender(const Sprite* sprite, Transform* transform)
 			DGL_Graphics_SetShaderMode(DGL_SM_TEXTURE);
 			// Set texture and texture offsets
 
+			printf("FrameIndex: %i\n", sprite->frameIndex);
 			SpriteSourceSetTexture(sprite->spriteSource);
 			SpriteSourceSetTextureOffset(sprite->spriteSource, sprite->frameIndex);
 		}
@@ -248,7 +267,6 @@ void SpriteSetFrame(Sprite* sprite, unsigned int frameIndex)
 {
 	if (sprite)
 	{
-		printf("FrameIndex: %i\n", frameIndex);
 		sprite->frameIndex = frameIndex;
 		TraceMessage("SpriteSetFrame: frame index = %d", frameIndex);
 	}

@@ -17,6 +17,7 @@
 #include "stdafx.h"
 #include "Entity.h"
 #include "Stream.h"
+#include "Behavior.h"
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
@@ -38,28 +39,28 @@ typedef void(*BehaviorFunctionPtrDt)(Behavior* behavior, float dt);
 // pseudo-inheritance in Project 5.
 // NOTE: You are not allowed to change the contents of this structure, as it is
 // part of the public interface.
-typedef struct Behavior
-{
-	// Pointer to the behavior's parent entity.
-	Entity* parent;
-
-	// Behavior Finite-State Machine (FSM) state variables.
-	int stateCurr;
-	int stateNext;
-
-	// Behavior Finite-State Machine (FSM) function pointers.
-	BehaviorFunctionPtr		onInit;
-	BehaviorFunctionPtrDt	onUpdate;
-	BehaviorFunctionPtr		onExit;
-
-	// Additional variables shared by all behaviors.
-	// NOTE: Variables that are unique to a specific behavior should not be placed here.
-
-	// Generic timer - may be used as a life timer or a weapon cooldown timer.
-	// (Default = 0, means infinite amount of time remaining or weapon can be fired.)
-	float	timer;
-
-} Behavior;
+//typedef struct Behavior
+//{
+//	// Pointer to the behavior's parent entity.
+//	Entity* parent;
+//
+//	// Behavior Finite-State Machine (FSM) state variables.
+//	int stateCurr;
+//	int stateNext;
+//
+//	// Behavior Finite-State Machine (FSM) function pointers.
+//	BehaviorFunctionPtr		onInit;
+//	BehaviorFunctionPtrDt	onUpdate;
+//	BehaviorFunctionPtr		onExit;
+//
+//	// Additional variables shared by all behaviors.
+//	// NOTE: Variables that are unique to a specific behavior should not be placed here.
+//
+//	// Generic timer - may be used as a life timer or a weapon cooldown timer.
+//	// (Default = 0, means infinite amount of time remaining or weapon can be fired.)
+//	float	timer;
+//
+//} Behavior;
 
 //------------------------------------------------------------------------------
 // Public Variables:
@@ -77,7 +78,16 @@ typedef struct Behavior
 //	 If 'other' is valid and the memory allocation was successful,
 //	   then return a pointer to the cloned component,
 //	   else return NULL.
-Behavior* BehaviorClone(Behavior* other);
+Behavior* BehaviorClone(Behavior* other)
+{
+	Behavior* beh = calloc(1, sizeof(Behavior));
+
+	if (other) {
+		*beh = *other;
+	}
+
+	return beh;
+}
 
 // Free the memory associated with a Behavior component.
 // (Also, set the behavior pointer to NULL.)

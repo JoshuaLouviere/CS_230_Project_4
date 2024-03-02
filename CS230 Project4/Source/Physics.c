@@ -85,14 +85,8 @@ Physics* PhysicsCreate(void)
 //	 physics = Pointer to the Physics component pointer.
 void PhysicsFree(Physics** physics)
 {
-	if (physics)
+	if (*physics)
 	{
-		(*physics)->oldTranslation.x = 0.0f;
-		(*physics)->oldTranslation.y = 0.0f;
-		(*physics)->acceleration.x = 0.0f;
-		(*physics)->acceleration.y = 0.0f;
-		(*physics)->velocity.x = 0.0f;
-		(*physics)->velocity.y = 0.0f;
 		free(*physics);
 		*physics = NULL;
 	}
@@ -222,10 +216,11 @@ void PhysicsUpdate(Physics* physics, Transform* transform, float dt)
 Physics* PhysicsClone(const Physics* other)
 {
 	Physics* physics = PhysicsCreate();
-	physics->acceleration = other->acceleration;
-	physics->oldTranslation = other->oldTranslation;
-	physics->velocity = other->velocity;
-	physics->rotationalVelocity = other->rotationalVelocity;
+
+	if (physics && other) {
+		*physics = *other;
+	}
+	
 	return physics;
 }
 

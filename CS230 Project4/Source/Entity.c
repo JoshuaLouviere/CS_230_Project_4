@@ -24,6 +24,7 @@
 #include "Animation.h"
 #include "Behavior.h"
 #include "BehaviorSpaceship.h"
+#include "BehaviorBullet.h"
 
 //------------------------------------------------------------------------------
 // Forward References:
@@ -109,12 +110,25 @@ void EntityFree(Entity** entity)
 	if (*entity)
 	{
 		// free all parts first then the container
-		PhysicsFree(&((*entity)->physics));
-		(*entity)->physics = NULL;
+		if ((*entity)->physics) {
+			PhysicsFree(&((*entity)->physics));
+			(*entity)->physics = NULL;
+		}
+
 		TransformFree(&((*entity)->transform));
 		(*entity)->transform = NULL;
+
+		if ((*entity)->animation) {
+			AnimationFree(&((*entity)->animation));
+			(*entity)->animation = NULL;
+		}
+		
+		BehaviorFree(&((*entity)->behavior));
+		(*entity)->behavior = NULL;
+
 		SpriteFree(&((*entity)->sprite));
 		(*entity)->sprite = NULL;
+
 		free(*entity);
 		*entity = NULL;
 	}
@@ -131,6 +145,7 @@ void EntityAddAnimation(Entity* entity, Animation* animation)
 	if (entity && animation)
 	{
 		entity->animation = animation;
+		AnimationSetParent(animation, entity);
 	}
 }
 
@@ -172,12 +187,17 @@ void EntityRead(Entity* entity, Stream stream)
 			{
 				Animation* animation = AnimationCreate();
 				AnimationRead(animation, stream);
-				AnimationSetParent(animation, entity);
 				entity->animation = animation;
 			}
 			else if (strncmp(token, "BehaviorSpaceship", _countof("BehaviorSpaceship")) == 0) 
 			{
 				Behavior* beh = BehaviorSpaceshipCreate();
+				BehaviorRead(beh, stream);
+				EntityAddBehavior(entity, beh);
+			}
+			else if (strncmp(token, "BehaviorBullet", _countof("BehaviorBullet")) == 0)
+			{
+				Behavior* beh = BehaviorBulletCreate();
 				BehaviorRead(beh, stream);
 				EntityAddBehavior(entity, beh);
 			}
@@ -285,13 +305,12 @@ Entity* EntityClone(const Entity* other)
 		//Entity* shallow = &other;
 		Entity* deep = EntityCreate();
 		EntitySetName(deep, other->name);
-		deep->animation = other->animation;
-		deep->behavior = other->behavior;
-		deep->isDestroyed = other->isDestroyed;
-		deep->physics = other->physics;
-		deep->sprite = other->sprite;
-		deep->transform = other->transform;
-
+		EntityAddSprite(deep, SpriteClone(other->sprite));
+		EntityAddAnimation(deep, AnimationClone(other->animation));
+		EntityAddBehavior(deep, BehaviorClone(other->behavior));
+		deep->isDestroyed = false;
+		EntityAddTransform(deep, TransformClone(other->transform));
+		EntityAddPhysics(deep, PhysicsClone(other->physics));
 		if (deep) {
 			return deep;
 		}
@@ -437,9 +456,9 @@ void EntityUpdate(Entity* entity, float dt)
 {
 	if (entity)
 	{
-		AnimationUpdate(entity->animation, dt);
-		PhysicsUpdate(entity->physics, entity->transform, dt);
 		BehaviorUpdate(entity->behavior, dt);
+		PhysicsUpdate(entity->physics, entity->transform, dt);
+		AnimationUpdate(entity->animation, dt);
 	}
 }
 

@@ -227,12 +227,13 @@ static void Level1SceneUpdate(float dt)
 	// NOTE: This call causes the engine to exit immediately.  Make sure to remove
 	//   it when you are ready to test out a new scene.
 
-	EntityUpdate(instance.monkey, dt);
-	EntityUpdate(instance.entity, dt);
-	EntityUpdate(instance.livesText, dt);
 
 	Level1SceneMovementController(instance.monkey);
 	Level1SceneBounceController(instance.entity);
+
+	EntityUpdate(instance.monkey, dt);
+	EntityUpdate(instance.entity, dt);
+	EntityUpdate(instance.livesText, dt);
 
 	if (Level1SceneIsColliding(instance.monkey, instance.entity))
 	{
@@ -245,27 +246,7 @@ static void Level1SceneUpdate(float dt)
 		{
 			SceneRestart();
 		}
-	}
-
-	
-
-	if (DGL_Input_KeyTriggered('0'))
-	{
-		SceneSystemSetNext(DemoSceneGetInstance());
-	}
-	else if (DGL_Input_KeyTriggered('1'))
-	{
-		SceneRestart();
-	}
-	else if (DGL_Input_KeyTriggered('2'))
-	{
-		SceneSystemSetNext(Level2SceneGetInstance());
-	}
-	else if (DGL_Input_KeyTriggered('9'))
-	{
-		SceneSystemSetNext(SandboxSceneGetInstance());
-	}
-		
+	}	
 }
 
 static bool Level1SceneIsColliding(const Entity* entityA, const Entity* entityB)
@@ -374,9 +355,6 @@ void Level1SceneRender(void)
 // Exit the scene.
 static void Level1SceneExit()
 {
-	EntityFree(&instance.monkey);
-	EntityFree(&instance.livesText);
-	EntityFree(&instance.entity);
 	SpriteSourceFree(&instance.monkeyJumpSpriteSource);
 	SpriteSourceFree(&instance.monkeyIdleSpriteSource);
 	SpriteSourceFree(&instance.monkeyWalkSpriteSource);
@@ -385,10 +363,14 @@ static void Level1SceneExit()
 	MeshFree(&instance.livesTextMesh);
 	MeshFree(&instance.monkeyMesh);
 	MeshFree(&instance.mesh);
+	/*EntityFree(&instance.monkey);
+	EntityFree(&instance.livesText);
+	EntityFree(&instance.entity);*/
 }
 
 // Unload any resources used by the scene.
 static void Level1SceneUnload(void)
 {
+	
 }
 
