@@ -1,11 +1,11 @@
-//------------------------------------------------------------------------------
+﻿//------------------------------------------------------------------------------
 //
 // File Name:	BehaviorSpaceship.h
 // Author(s):	Doug Schilling (dschilling)
 // Project:		Project 4
 // Course:		CS230S24
 //
-// Copyright � 2024 DigiPen (USA) Corporation.
+// Copyright © 2024 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 
@@ -17,7 +17,12 @@
 #include "Behavior.h"
 #include "BehaviorSpaceship.h"
 #include "BehaviorBullet.h"
+#include "Vector2D.h"
+#include "Physics.h"
 #include "DGL.h"
+#include "Transform.h"
+#include "Entity.h"
+#include "EntityFactory.h"
 
 //------------------------------------------------------------------------------
 
@@ -56,25 +61,99 @@ static void BehaviorSpaceshipSpawnBullet(Behavior* behavior);
 
 static void BehaviorSpaceshipUpdateRotation(Behavior* behavior, float dt)
 {
+	/*If ‘VK_LEFT’ is pressed,
+	Set the physics component’s rotation velocity = spaceshipTurnRateMax
+	Else If ‘VK_RIGHT’ is pressed,
+	Set the physics component’s rotation velocity = -spaceshipTurnRateMax
+	Else
+	Set the physics component’s rotation velocity = 0*/
+	Physics* phys = EntityGetPhysics(behavior->parent);
+	if (DGL_Input_KeyDown(VK_LEFT)) {
+		PhysicsSetRotationalVelocity(phys, spaceshipTurnRateMax);
+	}
+	else if (DGL_Input_KeyDown(VK_RIGHT)) {
+		PhysicsSetRotationalVelocity(phys, -spaceshipTurnRateMax);
+	}
+	else {
+		PhysicsSetRotationalVelocity(phys, 0);
+	}
 	UNREFERENCED_PARAMETER(dt);
-	UNREFERENCED_PARAMETER(behavior);
 }
+
 static void BehaviorSpaceshipUpdateVelocity(Behavior* behavior, float dt)
 {
 	UNREFERENCED_PARAMETER(dt);
 	UNREFERENCED_PARAMETER(behavior);
+	/*o	Get the transform and physics components from the behavior’s parent Entity.
+		o	Verify that the pointers are valid.
+		o	Get the transform component’s ‘rotation’.
+		o	Get a unit vector in direction of ‘rotation’.
+			Hint : There is a Vector2D function for this
+		o	Get the physics component’s ‘velocity’.
+		o	Calculate the new velocity :
+			velocity = velocity + direction of rotation * spaceshipAcceleration * dt
+			Note : Try using the Vector2DScaleAdd function for this
+		o	Calculate the ‘speed’ of this new velocity.
+			Hint : speed = length(new velocity)
+		o	If the speed > spaceshipSpeedMax, then limit the speed :
+		velocity = velocity * (spaceshipMaxSpeed / speed)
+		o	Set the physics component’s new velocity.*/
+	Transform* tra = EntityGetTransform(behavior->parent);
+	Physics* phy = EntityGetPhysics(behavior->parent);
+	if (phy && tra) {
+		float rot = TransformGetRotation(tra);
+
+		Vector2D* dir = calloc(1, sizeof(Vector2D));
+		Vector2DFromAngleRad(dir, rot);
+
+		Vector2D* vel = (Vector2D *)PhysicsGetVelocity(phy);
+		Vector2DScaleAdd(vel, dir, vel, spaceshipAcceleration * dt);
+	}
+
+
 
 }
 static void BehaviorSpaceshipUpdateWeapon(Behavior* behavior, float dt)
 {
-	UNREFERENCED_PARAMETER(dt);
-	UNREFERENCED_PARAMETER(behavior);
-
+	/*o	If the behavior timer > 0,
+			Decrement the behavior timer by ‘dt’.
+			If the behavior timer < 0,
+		•	Set the behavior timer = 0
+		o	If spacebar(‘ ‘) is pressed,
+			If behavior timer <= 0
+		•	Call BehaviorSpaceshipSpawnBullet
+		•	Set behavior timer = spaceshipWeaponCooldownTime*/
+	if (behavior->timer > 0) {
+		behavior->timer -= dt;
+		if (behavior->timer < 0) {
+			behavior->timer = 0;
+		}
+		if (DGL_Input_KeyDown(VK_SPACE)) {
+			if (behavior->timer <= 0) {
+				BehaviorSpaceshipSpawnBullet(behavior);
+				behavior->timer = spaceshipWeaponCooldownTime;
+			}
+		}
+	}
 }
 static void BehaviorSpaceshipSpawnBullet(Behavior* behavior)
 {
 	UNREFERENCED_PARAMETER(behavior);
-
+	/*o	Call EntityFactoryBuild to build a new ‘Bullet’ Entity.
+			NOTE : The ‘entityName’ parameter is case-sensitive!
+		o	If the Bullet was cloned successfully
+			Get the spaceship’s position and rotation.
+			Set the cloned bullet’s position and rotation.
+			Get a unit vector in direction of the spaceship’s ‘rotation’.
+			Set the bullet’s velocity = direction * spaceshipWeaponBulletSpeed
+			Add the cloned bullet to the Entity manager’s active list.*/
+	Entity* ent = EntityFactoryBuild("Bullet");
+	if (ent) {
+		Transform* tran = EntityGetTransform(behavior->parent);
+		float rot = TransformGetRotation(tran);
+		Vector2D* pos = TransformGetTranslation(tran);
+		
+	}
 }
 
 // Dynamically allocate a new (Spaceship) behavior component.

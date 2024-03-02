@@ -285,6 +285,13 @@ Entity* EntityClone(const Entity* other)
 		//Entity* shallow = &other;
 		Entity* deep = EntityCreate();
 		EntitySetName(deep, other->name);
+		deep->animation = other->animation;
+		deep->behavior = other->behavior;
+		deep->isDestroyed = other->isDestroyed;
+		deep->physics = other->physics;
+		deep->sprite = other->sprite;
+		deep->transform = other->transform;
+
 		if (deep) {
 			return deep;
 		}

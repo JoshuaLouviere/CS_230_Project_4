@@ -207,7 +207,7 @@ void PhysicsUpdate(Physics* physics, Transform* transform, float dt)
 
 		float rot = TransformGetRotation(transform);
 		float vel = PhysicsGetRotationalVelocity(physics);
-		TransformSetRotation(transform, (rot + vel) * dt);
+		TransformSetRotation(transform, rot + vel * dt);
 	}
 }
 

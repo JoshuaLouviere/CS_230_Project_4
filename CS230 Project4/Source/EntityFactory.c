@@ -59,7 +59,7 @@ Entity* EntityFactoryBuild(const char* entityName)
 	} 
 
 	char pathName[50] = "";
-	sprintf_s(pathName, _countof(pathName), "./Data/%s.txt", entityName);
+	sprintf_s(pathName, _countof(pathName), "Data/%s.txt", entityName);
 	// printf("%s\n", pathName);
 	FILE* file = StreamOpen(pathName);
 
@@ -79,8 +79,9 @@ Entity* EntityFactoryBuild(const char* entityName)
 				EntityRead(ent, file);
 				EntityContainerAddEntity(archetypes, ent);
 
+				Entity* clone = EntityClone(ent);
 				StreamClose(&file);
-				return ent;
+				return clone;
 			}
 
 			StreamClose(&file);
